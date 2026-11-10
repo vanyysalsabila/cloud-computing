@@ -5,10 +5,10 @@ Waktu ditulis dalam WIB. ID instance disalin dari terminal (`i-0…`); jangan me
 
 | Hal | Isi |
 |---|---|
-| Nama | |
-| NIM | |
-| Kelompok | `k0_` |
-| Kasus | |
+| Nama | Vany Salsabila Putri |
+| NIM | 123450022 |
+| Kelompok | `k01` |
+| Kasus | Klinik Sehat Lampung |
 
 ## Log langkah
 
@@ -36,8 +36,9 @@ Waktu ditulis dalam WIB. ID instance disalin dari terminal (`i-0…`); jangan me
 - Waktu CLI (Enter sampai `running`): … detik
 - ID instance: `coba-konsol` …; dua `coba-cli` … dan …
 - Keputusan yang tidak tercatat di mana pun selain ingatan dan riwayat terminal saya:
-  - …
-  - …
+  - AMI yang dipilih di konsol tidak tercatat karena tidak ada tfvars atau kode
+  - Ukuran instance yang dipakai saat `run-instances` CLI tidak masuk ke repo mana pun
+  - Tag tambahan atau tidak — bergantung pada ingatan operator
 - Semua instance Bagian A sudah di-terminate (bukti: `describe-instances` kosong; `tanpa_instance_liar` lulus pada potret …): ya / belum
 
 ## Catatan Bagian D
@@ -52,22 +53,22 @@ Waktu ditulis dalam WIB. ID instance disalin dari terminal (`i-0…`); jangan me
 
 | Komponen | IaaS / PaaS / SaaS / bukan model layanan | Alasan (lapisan yang saya sentuh dan yang tidak) |
 |---|---|---|
-| Instance EC2 | | |
-| AWS Budgets | | |
-| Repo GitHub | | |
-| Workbench (panel Tugas) | | |
-| `koma cek` | | |
+| Instance EC2 | IaaS | Saya menyediakan OS (memilih AMI), networking (subnet, tag), dan ukuran compute. AWS hanya menyediakan hardware dan hypervisor. Semua lapisan di atas (OS, runtime, aplikasi) menjadi tanggung jawab saya. |
+| AWS Budgets | PaaS / SaaS | Saya hanya mengonfigurasi parameter anggaran (nilai, email, threshold). AWS mengelola engine pemantauan biaya sepenuhnya; saya tidak menyentuh OS atau infrastruktur di baliknya. |
+| Repo GitHub | SaaS | Saya hanya memakai layanan version control melalui antarmuka web dan git CLI. GitHub mengelola server, storage, ketersediaan, dan pembaruan. Tidak ada lapisan yang saya kelola sendiri. |
+| Workbench (panel Tugas) | SaaS | Dosen dan platform menyediakan antarmuka tugas. Saya hanya mengonsumsi fitur; tidak ada infrastruktur atau runtime yang saya konfigurasikan. |
+| `koma cek` | Bukan model layanan (alat lokal) | Script Python yang berjalan di mesin saya sendiri. Alat ini bukan layanan cloud; ia memanggil API AWS dari sisi klien. |
 
 ### Karakteristik cloud yang dialami
 
 | Karakteristik ([S] hlm. 40–45) | Dialami / dibatasi / tidak | Bukti hari ini (perintah, keluaran, atau angka) |
 |---|---|---|
-| On-demand provisioning | | |
-| Self-service | | |
-| Resource pooling, multi-tenancy | | |
-| Rapid elasticity | | |
-| Measured service | | |
-| Broad network access | | |
+| On-demand provisioning | Dialami | `tofu apply` membuat EC2 dalam hitungan detik tanpa perlu memesan kapasitas terlebih dahulu |
+| Self-service | Dialami | Seluruh provisioning dilakukan mandiri via CLI dan OpenTofu tanpa menghubungi staf AWS |
+| Resource pooling, multi-tenancy | Dialami (tidak terlihat langsung) | Instance `t3.micro` berjalan di hardware bersama AWS; hypervisor mengisolasi tenant |
+| Rapid elasticity | Dialami (terbatas Free plan) | Bisa mengganti `instance_type` dari `t3.micro` ke `t3.small` dengan satu perubahan tfvars + `tofu apply`; Free plan membatasi jenis instance yang gratis |
+| Measured service | Dialami | AWS Budgets memantau pemakaian per jam; `koma sisa` menampilkan sisa kredit |
+| Broad network access | Dialami | Instance dapat diakses via SSH dari jaringan mana pun (lewat IP publik atau SSM) |
 
 ## Potret Tugas
 

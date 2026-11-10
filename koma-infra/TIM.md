@@ -6,15 +6,15 @@ setiap anggota.
 
 | Hal | Isi |
 |---|---|
-| ID kelompok | `k0_` (k01–k05) |
-| Kasus | <nama kasus, mis. Klinik Sehat Lampung> (`studi-kasus/kasus-<k>-….md`) |
-| Pemilik repo ini (NIM) | |
+| ID kelompok | `k01` |
+| Kasus | Klinik Sehat Lampung (`studi-kasus/kasus-k01-klinik-sehat-lampung.md`) |
+| Pemilik repo ini (NIM) | 123450022 |
 
 ## Anggota
 
 | NIM | Nama | Repo GitHub `koma-infra` |
 |---|---|---|
-| | | |
+| 123450022 | Vany Salsabila Putri | *(isi URL repo GitHub koma-infra kamu)* |
 | | | |
 | | | |
 | | | |
