@@ -1,0 +1,4 @@
+nim       = "123450022"
+kelompok  = "k01"
+cidr_saya = "103.0.0.1/32" # ganti dengan IP Anda dari perintah: python3 alat/koma.py ip
+versi     = "v1"
