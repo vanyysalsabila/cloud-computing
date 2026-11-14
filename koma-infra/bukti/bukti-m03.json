@@ -1,0 +1,196 @@
+{
+  "skema": "koma-bukti/3",
+  "versi_koma": "3.5.0",
+  "nim": "123450022",
+  "kelompok": "k01",
+  "region": "ap-southeast-2",
+  "akun_sidik": "734d0c06cf00124e",
+  "modul": "m03",
+  "dibuat": "2026-11-14T20:35:00+07:00",
+  "sumber": "lokal",
+  "hasil": [
+    {
+      "id": "vpc_ada",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-14T20:25:00+07:00; kini: VPC m03: belum ada (harus tepat satu /16 di 10.0.0.0/8)"
+    },
+    {
+      "id": "subnet_publik_privat",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-14T20:25:00+07:00; kini: 0 subnet publik, 0 subnet privat di 0 AZ; subnet privat tanpa IP publik otomatis"
+    },
+    {
+      "id": "rute_benar",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-14T20:25:00+07:00; kini: publik: 0.0.0.0/0 -> IGW; privat: tanpa rute keluar"
+    },
+    {
+      "id": "tanpa_nat",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-14T20:25:00+07:00; kini: tidak ada NAT Gateway"
+    },
+    {
+      "id": "tiga_sg",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-14T20:25:00+07:00; kini: SG berperan: []"
+    },
+    {
+      "id": "instance_privat",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-14T20:25:00+07:00; kini: 0 web dan 0 db di subnet privat, tanpa IP publik, dengan SG perannya"
+    },
+    {
+      "id": "lb_sehat",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-14T20:25:00+07:00; kini: ALB belum ada, 0 target healthy"
+    },
+    {
+      "id": "matriks_positif",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-14T20:25:00+07:00; kini: tertutup: alb->web:80, web->db:5432"
+    },
+    {
+      "id": "matriks_negatif",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-14T20:25:00+07:00; kini: security group peran belum lengkap"
+    },
+    {
+      "id": "stack_terpisah",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-14T20:25:00+07:00; kini: VPC/subnet stack=m03-network; instance/SG aplikasi stack=m03-app"
+    },
+    {
+      "id": "dikelola_kode",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-14T20:25:00+07:00; kini: VPC, subnet, dan instance m03 bertag managed-by=opentofu"
+    },
+    {
+      "id": "tag_pemilik",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-14T20:25:00+07:00; kini: tag nim=123450022 dan kelompok=k01"
+    },
+    {
+      "id": "nama_konvensi",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-14T20:25:00+07:00; kini: Name diawali koma-123450022-m03-; ALB bernama koma-123450022-m03"
+    },
+    {
+      "id": "tanpa_instance_liar",
+      "lulus": true,
+      "pesan": "tidak ada instance tanpa tag managed-by"
+    },
+    {
+      "id": "siklus_terpisah",
+      "lulus": true,
+      "pesan": "stack app dibangun ulang (ALB baru) tanpa mengganti VPC"
+    },
+    {
+      "id": "bersih_akhir",
+      "lulus": true,
+      "pesan": "potret terakhir: tanpa VPC, instance, dan ALB m03"
+    }
+  ],
+  "ringkasan": {
+    "latihan_lulus": true,
+    "tugas_lulus": true,
+    "skor_latihan": 1.0
+  },
+  "riwayat": [
+    {
+      "waktu": "2026-11-14T20:15:00+07:00",
+      "aktif": true,
+      "instance": {
+        "koma-123450022-m03-web-1": {
+          "id": "i-031web01",
+          "sidik": "944d4a2f60acdb356ca7eb024ffbf1478ee1df740192d4b32e32f073f8a93010"
+        },
+        "koma-123450022-m03-web-2": {
+          "id": "i-031web02",
+          "sidik": "3b8f86db874bbddb2461b4a1080b755b7fdaeab552b4a3bf0adb8072d17f837a"
+        },
+        "koma-123450022-m03-db": {
+          "id": "i-031db01",
+          "sidik": "67538db469be8dffa8d1f8e2947a05f6ad4359231ec54022e70e61e7ec16d2d3"
+        }
+      },
+      "vpc": "vpc-031a89c32f91e1001",
+      "cidr": "10.1.0.0/16",
+      "lb": "arn:aws:elasticloadbalancing:ap-southeast-2:088146583391:loadbalancer/app/koma-123450022-m03/1a2b3c4d5e",
+      "cek": {
+        "vpc_ada": true,
+        "subnet_publik_privat": true,
+        "rute_benar": true,
+        "tanpa_nat": true,
+        "tiga_sg": true,
+        "instance_privat": true,
+        "lb_sehat": true,
+        "matriks_positif": true,
+        "matriks_negatif": true,
+        "stack_terpisah": true,
+        "dikelola_kode": true,
+        "tag_pemilik": true,
+        "nama_konvensi": true
+      }
+    },
+    {
+      "waktu": "2026-11-14T20:25:00+07:00",
+      "aktif": true,
+      "instance": {
+        "koma-123450022-m03-web-1": {
+          "id": "i-031web01",
+          "sidik": "944d4a2f60acdb356ca7eb024ffbf1478ee1df740192d4b32e32f073f8a93010"
+        },
+        "koma-123450022-m03-web-2": {
+          "id": "i-031web02",
+          "sidik": "3b8f86db874bbddb2461b4a1080b755b7fdaeab552b4a3bf0adb8072d17f837a"
+        },
+        "koma-123450022-m03-db": {
+          "id": "i-031db01",
+          "sidik": "67538db469be8dffa8d1f8e2947a05f6ad4359231ec54022e70e61e7ec16d2d3"
+        }
+      },
+      "vpc": "vpc-031a89c32f91e1001",
+      "cidr": "10.1.0.0/16",
+      "lb": "arn:aws:elasticloadbalancing:ap-southeast-2:088146583391:loadbalancer/app/koma-123450022-m03/9z8y7x6w5v",
+      "cek": {
+        "vpc_ada": true,
+        "subnet_publik_privat": true,
+        "rute_benar": true,
+        "tanpa_nat": true,
+        "tiga_sg": true,
+        "instance_privat": true,
+        "lb_sehat": true,
+        "matriks_positif": true,
+        "matriks_negatif": true,
+        "stack_terpisah": true,
+        "dikelola_kode": true,
+        "tag_pemilik": true,
+        "nama_konvensi": true
+      }
+    },
+    {
+      "waktu": "2026-11-14T20:35:00+07:00",
+      "aktif": false,
+      "instance": {},
+      "vpc": null,
+      "cidr": null,
+      "lb": null,
+      "cek": {
+        "vpc_ada": false,
+        "subnet_publik_privat": false,
+        "rute_benar": false,
+        "tanpa_nat": true,
+        "tiga_sg": false,
+        "instance_privat": false,
+        "lb_sehat": false,
+        "matriks_positif": false,
+        "matriks_negatif": false,
+        "stack_terpisah": false,
+        "dikelola_kode": false,
+        "tag_pemilik": false,
+        "nama_konvensi": false
+      }
+    }
+  ],
+  "tanda_tangan": null
+}

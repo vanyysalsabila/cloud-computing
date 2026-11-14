@@ -51,7 +51,7 @@ locals {
 
     [Service]
     Type=simple
-    Environment=KOMA_VERSI=v1
+    Environment=KOMA_VERSI=${var.versi}
     Environment=KOMA_PERAN=web
     ExecStart=/usr/bin/python3 /opt/koma/koma_api.py --port 80
     Restart=always
@@ -161,9 +161,10 @@ resource "aws_security_group" "db" {
 # ---------------------------------------------------------------------------
 
 resource "aws_instance" "web" {
+  count                       = var.jumlah_web
   ami                         = data.aws_ami.al2023.id
   instance_type               = "t3.micro"
-  subnet_id                   = tolist(data.aws_subnets.privat.ids)[0]
+  subnet_id                   = tolist(data.aws_subnets.privat.ids)[count.index % length(data.aws_subnets.privat.ids)]
   vpc_security_group_ids      = [aws_security_group.web.id]
   associate_public_ip_address = false
 
@@ -194,7 +195,7 @@ resource "aws_instance" "web" {
   EOF
 
   tags = {
-    Name  = "koma-${var.nim}-m03-web"
+    Name  = "koma-${var.nim}-m03-web-${count.index + 1}"
     peran = "web"
     stack = "m03-app"
     modul = "m03"
@@ -270,8 +271,9 @@ resource "aws_lb_target_group" "tg" {
 }
 
 resource "aws_lb_target_group_attachment" "web" {
+  count            = var.jumlah_web
   target_group_arn = aws_lb_target_group.tg.arn
-  target_id        = aws_instance.web.id
+  target_id        = aws_instance.web[count.index].id
   port             = 80
 }
 

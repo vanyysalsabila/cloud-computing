@@ -9,7 +9,7 @@ output "alb_arn" {
 }
 
 output "web_private_ip" {
-  value       = aws_instance.web.private_ip
+  value       = aws_instance.web[*].private_ip
   description = "IP privat instance web"
 }
 

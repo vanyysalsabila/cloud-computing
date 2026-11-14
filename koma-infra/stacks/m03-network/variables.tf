@@ -16,7 +16,7 @@ variable "region" {
 
 variable "cidr_vpc" {
   type        = string
-  default     = "10.1.0.0/16"
+  default     = "10.30.0.0/16"
   description = "CIDR block VPC"
   validation {
     condition     = can(regex("^10\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}/16$", var.cidr_vpc))

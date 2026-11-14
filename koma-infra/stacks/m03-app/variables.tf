@@ -22,3 +22,19 @@ variable "cidr_saya" {
     error_message = "cidr_saya harus berformat IP publik dengan prefix /32."
   }
 }
+
+variable "jumlah_web" {
+  type        = number
+  default     = 2
+  description = "Jumlah server web"
+  validation {
+    condition     = var.jumlah_web >= 1 && var.jumlah_web <= 4
+    error_message = "jumlah_web harus antara 1 dan 4."
+  }
+}
+
+variable "versi" {
+  type        = string
+  default     = "3.0.0"
+  description = "Versi aplikasi koma-api"
+}
