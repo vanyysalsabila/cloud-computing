@@ -78,7 +78,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "arsip" {
     filter {}
 
     noncurrent_version_expiration {
-      noncurrent_days = 90
+      noncurrent_days = var.retensi_versi_hari
     }
   }
 
@@ -147,7 +147,7 @@ resource "aws_instance" "db" {
 
   user_data = <<-EOF
     #!/bin/bash
-    echo "KOMA-PENANDA: server db m04 aktif iterasi ${var.iterasi}" > /dev/console
+    echo "KOMA-PENANDA: server db m04 aktif versi ${var.versi}" > /dev/console
     echo "KOMA-PENANDA: volume data terpasang pada /dev/sdf" > /dev/console
   EOF
 
@@ -159,7 +159,7 @@ resource "aws_instance" "db" {
     managed-by = "opentofu"
     modul      = "m04"
     stack      = "m04-data"
-    iterasi    = var.iterasi
+    versi      = var.versi
   }
 }
 
@@ -169,7 +169,7 @@ resource "aws_instance" "db" {
 
 resource "aws_ebs_volume" "data" {
   availability_zone = aws_instance.db.availability_zone
-  size              = 8
+  size              = var.ukuran_data_gib
   type              = "gp3"
   encrypted         = true
 

@@ -16,8 +16,28 @@ variable "wilayah" {
   default     = "ap-southeast-2"
 }
 
-variable "iterasi" {
+variable "versi" {
   type        = string
-  description = "Penanda iterasi untuk versi state"
-  default     = "1"
+  default     = "4.0.0"
+  description = "Versi aplikasi koma-api / iterasi data"
+}
+
+variable "ukuran_data_gib" {
+  type        = number
+  default     = 1
+  description = "Ukuran volume EBS data dalam GiB"
+  validation {
+    condition     = var.ukuran_data_gib >= 1 && var.ukuran_data_gib <= 4
+    error_message = "ukuran_data_gib harus antara 1 dan 4 GiB."
+  }
+}
+
+variable "retensi_versi_hari" {
+  type        = number
+  default     = 30
+  description = "Masa retensi versi lama objek dalam hari"
+  validation {
+    condition     = var.retensi_versi_hari >= 1 && var.retensi_versi_hari <= 365
+    error_message = "retensi_versi_hari harus antara 1 dan 365 hari."
+  }
 }

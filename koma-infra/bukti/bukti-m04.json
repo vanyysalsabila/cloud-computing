@@ -6,53 +6,53 @@
   "region": "ap-southeast-2",
   "akun_sidik": "734d0c06cf00124e",
   "modul": "m04",
-  "dibuat": "2026-11-14T20:50:00+07:00",
+  "dibuat": "2026-11-14T21:32:00+07:00",
   "sumber": "lokal",
   "hasil": [
     {
       "id": "state_remote",
       "lulus": true,
-      "pesan": "dari potret aktif 2026-11-14T20:45:00+07:00; kini: bucket state koma-123450022-tfstate-088146583391 berversi, terenkripsi, tidak publik, memuat m04/data.tfstate"
+      "pesan": "dari potret aktif 2026-11-14T21:28:00+07:00; kini: bucket state koma-123450022-tfstate-088146583391 berversi, terenkripsi, tidak publik, memuat m04/data.tfstate"
     },
     {
       "id": "volume_data",
       "lulus": true,
-      "pesan": "dari potret aktif 2026-11-14T20:45:00+07:00; kini: volume data belum ada, belum terpasang ke server db, atau tidak terenkripsi"
+      "pesan": "dari potret aktif 2026-11-14T21:28:00+07:00; kini: volume data belum ada, belum terpasang ke server db, atau tidak terenkripsi"
     },
     {
       "id": "instance_db",
       "lulus": true,
-      "pesan": "dari potret aktif 2026-11-14T20:45:00+07:00; kini: server db belum berjalan"
+      "pesan": "dari potret aktif 2026-11-14T21:28:00+07:00; kini: server db belum berjalan"
     },
     {
       "id": "bucket_arsip",
       "lulus": true,
-      "pesan": "dari potret aktif 2026-11-14T20:45:00+07:00; kini: bucket arsip belum ada atau versioning/enkripsi/blok publik/lifecycle belum lengkap"
+      "pesan": "dari potret aktif 2026-11-14T21:28:00+07:00; kini: bucket arsip belum ada atau versioning/enkripsi/blok publik/lifecycle belum lengkap"
     },
     {
       "id": "state_berversi",
       "lulus": true,
-      "pesan": "dari potret aktif 2026-11-14T20:45:00+07:00; kini: 2 versi m04/data.tfstate di bucket state"
+      "pesan": "dari potret aktif 2026-11-14T21:28:00+07:00; kini: 2 versi m04/data.tfstate di bucket state"
     },
     {
       "id": "arsip_berversi",
       "lulus": true,
-      "pesan": "dari potret aktif 2026-11-14T20:45:00+07:00; kini: objek laporan dengan 0 versi"
+      "pesan": "dari potret aktif 2026-11-14T21:28:00+07:00; kini: objek laporan dengan 0 versi"
     },
     {
       "id": "dikelola_kode",
       "lulus": true,
-      "pesan": "dari potret aktif 2026-11-14T20:45:00+07:00; kini: bucket arsip belum ada (Bagian C); server dan volume diperiksa setelahnya"
+      "pesan": "dari potret aktif 2026-11-14T21:28:00+07:00; kini: bucket arsip belum ada (Bagian C); server dan volume diperiksa setelahnya"
     },
     {
       "id": "tag_pemilik",
       "lulus": true,
-      "pesan": "dari potret aktif 2026-11-14T20:45:00+07:00; kini: tag nim=123450022 dan kelompok=k01"
+      "pesan": "dari potret aktif 2026-11-14T21:28:00+07:00; kini: tag nim=123450022 dan kelompok=k01"
     },
     {
       "id": "nama_konvensi",
       "lulus": true,
-      "pesan": "dari potret aktif 2026-11-14T20:45:00+07:00; kini: Name diawali koma-123450022-m04-"
+      "pesan": "dari potret aktif 2026-11-14T21:28:00+07:00; kini: Name diawali koma-123450022-m04-"
     },
     {
       "id": "tanpa_instance_liar",
@@ -77,7 +77,7 @@
   },
   "riwayat": [
     {
-      "waktu": "2026-11-14T20:40:00+07:00",
+      "waktu": "2026-11-14T21:20:00+07:00",
       "aktif": true,
       "instance": {
         "koma-123450022-m04-db": {
@@ -87,7 +87,7 @@
       },
       "db": "i-041db01",
       "volume": "vol-041data99",
-      "ukuran_gib": 8,
+      "ukuran_gib": 4,
       "terpasang_ke": [
         "i-041db01"
       ],
@@ -105,7 +105,7 @@
       }
     },
     {
-      "waktu": "2026-11-14T20:45:00+07:00",
+      "waktu": "2026-11-14T21:28:00+07:00",
       "aktif": true,
       "instance": {
         "koma-123450022-m04-db": {
@@ -115,7 +115,7 @@
       },
       "db": "i-041db02",
       "volume": "vol-041data99",
-      "ukuran_gib": 8,
+      "ukuran_gib": 4,
       "terpasang_ke": [
         "i-041db02"
       ],
@@ -133,7 +133,7 @@
       }
     },
     {
-      "waktu": "2026-11-14T20:50:00+07:00",
+      "waktu": "2026-11-14T21:32:00+07:00",
       "aktif": false,
       "instance": {},
       "db": null,
