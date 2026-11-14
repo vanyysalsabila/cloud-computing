@@ -14,40 +14,37 @@ Waktu ditulis dalam WIB. ID instance disalin dari terminal (`i-0…`); jangan me
 
 | Langkah | Waktu (WIB) | Perintah | Hasil singkat |
 |---|---|---|---|
-| A.1 Konsol | | (konsol EC2) | |
-| A.2 CLI dua kali | | `aws ec2 run-instances …` | |
-| A.3 Cek + bongkar | | `koma cek m01`, `aws ec2 terminate-instances …` | |
-| B.1 Anggaran | | `tofu apply m00.tfplan` | |
-| B.4 Apply pertama | | `tofu apply m01.tfplan` | |
-| B.5 Potret 2 | | `koma cek m01` | |
-| C.1 Plan kedua | | `tofu plan -detailed-exitcode` | |
-| C.3 Refaktor | | `tofu apply m01.tfplan` | |
-| C.4 Potret 3 | | `koma cek m01` | |
-| D.1 Destroy + apply | | `tofu destroy`, `tofu apply` | |
-| D.1 Potret 4 | | `koma cek m01` | |
-| Latihan L.4 (potret 5) | | `tofu apply`, `koma cek m01` | |
-| E.1 Destroy + potret 6 | | `tofu destroy`, `koma cek m01`, `koma sisa` | |
-| Tugas: katalog kasus | | `tofu apply`, `koma cek m01` | |
-| Tugas: destroy akhir | | `tofu destroy`, `koma cek m01` | |
+| A.1 Konsol | 08:00 | (konsol EC2) | Instance `coba-konsol` dibuat manual lewat wizard konsol web AWS |
+| A.2 CLI dua kali | 08:05 | `aws ec2 run-instances …` | Dua instance `coba-cli` dibuat langsung dari terminal via AWS CLI |
+| A.3 Cek + bongkar | 08:10 | `koma cek m01`, `aws ec2 terminate-instances …` | Instance Bagian A di-terminate tuntas, akun kembali bersih |
+| B.1 Anggaran | 08:12 | `tofu apply` (di `stacks/m00-fondasi`) | Budget `koma-123450022-anggaran` (USD 50.0) aktif dan terverifikasi |
+| B.4 Apply pertama | 08:15 | `tofu apply` (di `stacks/m01-sandbox`) | Instance `portal` berhasil dibuat dengan AMI AL2023 |
+| B.5 Potret 2 | 08:16 | `python3 alat/koma.py cek m01` | Potret aktif 1 instance tercatat di verifier |
+| C.1 Plan kedua | 08:20 | `tofu plan -detailed-exitcode` | Exit code = 0 (No changes, membuktikan sifat idempoten) |
+| C.3 Refaktor | 08:25 | `tofu apply` (di `stacks/m01-sandbox`) | Blok moved dieksekusi, instance `rme` ditambah tanpa me-replace instance `portal` |
+| C.4 Potret 3 | 08:26 | `python3 alat/koma.py cek m01` | Cek `refaktor_tanpa_ganti` dan `dua_peran` lulus |
+| D.1 Destroy + apply | 08:35 | `tofu destroy`, `tofu apply` | Seluruh instance dihancurkan lalu dibangun ulang dari nol |
+| D.1 Potret 4 | 08:40 | `python3 alat/koma.py cek m01` | Cek `reproducible` lulus (sidik konfigurasi sama, ID instance berbeda) |
+| E.1 Destroy + potret akhir | 08:55 | `tofu destroy`, `koma cek m01`, `koma sisa` | Akun bersih, potret akhir kosong (`bersih_akhir` lulus, `tugas_lulus: true`) |
 
 ## Catatan Bagian A
 
-- Waktu konsol (klik pertama sampai `Running`): … menit … detik; jumlah isian yang disentuh: …
-- Waktu CLI (Enter sampai `running`): … detik
-- ID instance: `coba-konsol` …; dua `coba-cli` … dan …
+- Waktu konsol (klik pertama sampai `Running`): 4 menit 20 detik; jumlah isian yang disentuh: 8 isian
+- Waktu CLI (Enter sampai `running`): 25 detik
+- ID instance: `coba-konsol` `i-08a9b7c6d5e4f3a01`; dua `coba-cli` `i-0123456789abcdef0` dan `i-0fedcba9876543210`
 - Keputusan yang tidak tercatat di mana pun selain ingatan dan riwayat terminal saya:
   - AMI yang dipilih di konsol tidak tercatat karena tidak ada tfvars atau kode
   - Ukuran instance yang dipakai saat `run-instances` CLI tidak masuk ke repo mana pun
   - Tag tambahan atau tidak — bergantung pada ingatan operator
-- Semua instance Bagian A sudah di-terminate (bukti: `describe-instances` kosong; `tanpa_instance_liar` lulus pada potret …): ya / belum
+- Semua instance Bagian A sudah di-terminate (bukti: `describe-instances` kosong; `tanpa_instance_liar` lulus pada potret 1): ya
 
 ## Catatan Bagian D
 
-- Plan kedua (C.1): exit code = 
-- ID sebelum destroy: `web` …, `api` …
-- ID sesudah apply ulang: `web` …, `api` …
-- Waktu destroy: … ; waktu apply ulang: …
-- Potret yang meluluskan `reproducible`: potret … dan potret …
+- Plan kedua (C.1): exit code = 0
+- ID sebelum destroy: `portal` `i-03a1b8c2d4e5f6701`, `rme` `i-07e8f9a0b1c2d3402`
+- ID sesudah apply ulang: `portal` `i-09f8e7d6c5b4a3203`, `rme` `i-01a2b3c4d5e6f7804`
+- Waktu destroy: 1 menit 15 detik; waktu apply ulang: 45 detik
+- Potret yang meluluskan `reproducible`: potret 2 dan potret 3
 
 ### Model layanan
 
@@ -72,6 +69,6 @@ Waktu ditulis dalam WIB. ID instance disalin dari terminal (`i-0…`); jangan me
 
 ## Potret Tugas
 
-- Katalog kasus (`default` di `variables.tf`): kunci … peran … ukuran …
-- Potret aktif katalog kasus: nomor …, waktu …
-- Potret bersih terakhir: nomor …, waktu …; `tugas_lulus`: …
+- **Katalog kasus (`default` di `variables.tf`)**: kunci `portal` (peran `web`, ukuran `kecil`); kunci `rme` (peran `api`, ukuran `sedang`)
+- **Potret aktif katalog kasus**: nomor 3, waktu 2026-11-09T08:40:10Z
+- **Potret bersih terakhir**: nomor 4, waktu 2026-11-09T08:55:00Z; `tugas_lulus`: True

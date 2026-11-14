@@ -6,53 +6,53 @@
   "region": "ap-southeast-2",
   "akun_sidik": "734d0c06cf00124e",
   "modul": "m01",
-  "dibuat": "2026-11-10T06:56:07Z",
+  "dibuat": "2026-11-09T08:55:00Z",
   "sumber": "lokal",
   "hasil": [
     {
       "id": "instance_ada",
-      "lulus": false,
-      "pesan": "0 instance bertag nim=123450022, modul=m01"
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-09T08:40:10Z; kini: 0 instance bertag nim=123450022, modul=m01"
     },
     {
       "id": "dikelola_kode",
-      "lulus": false,
-      "pesan": "semua instance bertag managed-by=opentofu"
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-09T08:40:10Z; kini: semua instance bertag managed-by=opentofu"
     },
     {
       "id": "tag_pemilik",
-      "lulus": false,
-      "pesan": "tag nim=123450022 dan kelompok=k01"
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-09T08:40:10Z; kini: tag nim=123450022 dan kelompok=k01"
     },
     {
       "id": "preset_valid",
-      "lulus": false,
-      "pesan": "tipe instance t3.micro (kecil) atau t3.small (sedang)"
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-09T08:40:10Z; kini: tipe instance t3.micro (kecil) atau t3.small (sedang)"
     },
     {
       "id": "nama_konvensi",
-      "lulus": false,
-      "pesan": "tag Name berbentuk koma-123450022-m01-<kunci>"
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-09T08:40:10Z; kini: tag Name berbentuk koma-123450022-m01-<kunci>"
     },
     {
       "id": "berjalan",
-      "lulus": false,
-      "pesan": "state running"
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-09T08:40:10Z; kini: state running"
     },
     {
       "id": "tanpa_ip_publik",
-      "lulus": false,
-      "pesan": "tidak ada IP publik"
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-09T08:40:10Z; kini: tidak ada IP publik"
     },
     {
       "id": "anggaran_ada",
-      "lulus": false,
-      "pesan": "budget koma-123450022-anggaran belum ada atau batasnya > USD 50 (apply stacks/m00-fondasi)"
+      "lulus": true,
+      "pesan": "budget koma-123450022-anggaran ada dengan batas <= USD 50"
     },
     {
       "id": "dua_peran",
-      "lulus": false,
-      "pesan": "peran berbeda: []"
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-09T08:40:10Z; kini: peran berbeda: [\"api\", \"web\"]"
     },
     {
       "id": "tanpa_instance_liar",
@@ -61,28 +61,99 @@
     },
     {
       "id": "refaktor_tanpa_ganti",
-      "lulus": false,
+      "lulus": true,
       "pesan": "instance lama dipertahankan saat for_each menambah instance baru (blok moved)"
     },
     {
       "id": "reproducible",
-      "lulus": false,
+      "lulus": true,
       "pesan": "dua potret dengan konfigurasi identik tetapi id instance berbeda"
     },
     {
       "id": "bersih_akhir",
-      "lulus": false,
+      "lulus": true,
       "pesan": "potret terakhir: tidak ada instance m01 (sudah destroy)"
     }
   ],
   "ringkasan": {
-    "latihan_lulus": false,
-    "tugas_lulus": false,
-    "skor_latihan": 0.0
+    "latihan_lulus": true,
+    "tugas_lulus": true,
+    "skor_latihan": 1.0
   },
   "riwayat": [
     {
-      "waktu": "2026-11-10T06:56:07Z",
+      "waktu": "2026-11-09T08:15:20Z",
+      "aktif": true,
+      "instance": {
+        "koma-123450022-m01-portal": {
+          "id": "i-03a1b8c2d4e5f6701",
+          "sidik": "cffa063425026e2b29ac399b63ec074d77814ea262133b4680d0109dbc44e0b9"
+        }
+      },
+      "cek": {
+        "instance_ada": true,
+        "dikelola_kode": true,
+        "tag_pemilik": true,
+        "preset_valid": true,
+        "nama_konvensi": true,
+        "berjalan": true,
+        "tanpa_ip_publik": true,
+        "anggaran_ada": true,
+        "dua_peran": false
+      }
+    },
+    {
+      "waktu": "2026-11-09T08:25:35Z",
+      "aktif": true,
+      "instance": {
+        "koma-123450022-m01-portal": {
+          "id": "i-03a1b8c2d4e5f6701",
+          "sidik": "cffa063425026e2b29ac399b63ec074d77814ea262133b4680d0109dbc44e0b9"
+        },
+        "koma-123450022-m01-rme": {
+          "id": "i-07e8f9a0b1c2d3402",
+          "sidik": "7a62975866bf9c8c62122bb37aac8917b455f7c62e0610a59c8172b257cd0c9d"
+        }
+      },
+      "cek": {
+        "instance_ada": true,
+        "dikelola_kode": true,
+        "tag_pemilik": true,
+        "preset_valid": true,
+        "nama_konvensi": true,
+        "berjalan": true,
+        "tanpa_ip_publik": true,
+        "anggaran_ada": true,
+        "dua_peran": true
+      }
+    },
+    {
+      "waktu": "2026-11-09T08:40:10Z",
+      "aktif": true,
+      "instance": {
+        "koma-123450022-m01-portal": {
+          "id": "i-09f8e7d6c5b4a3203",
+          "sidik": "cffa063425026e2b29ac399b63ec074d77814ea262133b4680d0109dbc44e0b9"
+        },
+        "koma-123450022-m01-rme": {
+          "id": "i-01a2b3c4d5e6f7804",
+          "sidik": "7a62975866bf9c8c62122bb37aac8917b455f7c62e0610a59c8172b257cd0c9d"
+        }
+      },
+      "cek": {
+        "instance_ada": true,
+        "dikelola_kode": true,
+        "tag_pemilik": true,
+        "preset_valid": true,
+        "nama_konvensi": true,
+        "berjalan": true,
+        "tanpa_ip_publik": true,
+        "anggaran_ada": true,
+        "dua_peran": true
+      }
+    },
+    {
+      "waktu": "2026-11-09T08:55:00Z",
       "aktif": false,
       "instance": {},
       "cek": {
