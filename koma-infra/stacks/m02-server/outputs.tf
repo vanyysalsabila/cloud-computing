@@ -24,3 +24,13 @@ output "api" {
     url_versi  = try("http://${aws_instance.api[0].public_ip}/versi", null)
   }
 }
+
+output "goreng" {
+  description = "Informasi instance server goreng"
+  value = [
+    for i in aws_instance.goreng : {
+      id        = i.id
+      ip_publik = i.public_ip
+    }
+  ]
+}

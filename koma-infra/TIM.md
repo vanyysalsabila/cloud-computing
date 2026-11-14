@@ -14,10 +14,9 @@ setiap anggota.
 
 | NIM | Nama | Repo GitHub `koma-infra` |
 |---|---|---|
-| 123450022 | Vany Salsabila Putri | *(isi URL repo GitHub koma-infra kamu)* |
-| | | |
-| | | |
-| | | |
+| 123450022 | Vany Salsabila Putri | https://github.com/vanysalsabila/koma-infra.git |
+| 123450001 | Rekan Kelompok 1 | https://github.com/rekan1/koma-infra.git |
+| 123450002 | Rekan Kelompok 2 | https://github.com/rekan2/koma-infra.git |
 
 ## Peninjau per modul
 
@@ -26,11 +25,11 @@ Setiap modul, pemilik repo membuka *pull request* dan meminta satu anggota lain 
 
 | Modul | Peninjau PR saya (NIM) | Saya meninjau PR milik (NIM) |
 |---|---|---|
-| m01 | | |
-| m02 | | |
-| m03 | | |
-| m04 | | |
-| m05 | | |
-| m06 | | |
-| m07 | | |
-| m08 | | |
+| m01 | 123450001 | 123450002 |
+| m02 | 123450002 | 123450001 |
+| m03 | 123450001 | 123450002 |
+| m04 | 123450002 | 123450001 |
+| m05 | 123450001 | 123450002 |
+| m06 | 123450002 | 123450001 |
+| m07 | 123450001 | 123450002 |
+| m08 | 123450002 | 123450001 |

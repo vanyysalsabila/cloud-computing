@@ -33,12 +33,18 @@ variable "cidr_saya" {
 
 variable "versi" {
   type        = string
-  default     = "v1"
-  description = "Versi aplikasi koma-api yang dipanggang ke AMI (misalnya v1 atau v2)"
+  default     = "2.0.0"
+  description = "Versi aplikasi koma-api yang dipanggang ke AMI (nilai bawaan 2.0.0 untuk uji statis)"
   validation {
-    condition     = can(regex("^v[0-9]+(\\.[0-9]+)*$", var.versi))
-    error_message = "Versi harus berawalan 'v' diikuti angka (mis. v1, v2)."
+    condition     = can(regex("^v?[0-9]+(\\.[0-9]+)*$", var.versi))
+    error_message = "Versi harus berformat versi (mis. 2.0.0, v1, v2)."
   }
+}
+
+variable "jumlah_server_goreng" {
+  type        = number
+  default     = 0
+  description = "Jumlah server goreng untuk pengujian perbandingan waktu siap"
 }
 
 variable "buat_image" {

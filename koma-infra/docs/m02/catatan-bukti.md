@@ -66,6 +66,22 @@ Server tidak pernah di-SSH atau di-*patch* manual di tempat (*in-place modificat
 
 ---
 
+## Catatan Tugas
+
+- **Versi Rilis**: `2.2.0` (dan `v2`)
+- **Ukuran Server Rilis**: `t3.micro` (berdasarkan E4 SLA 99,95%, E5 latensi p95 < 500 ms, dan C3 skala API)
+- **Waktu Panggang (Bake Time)**: `3 menit 12 detik`
+- **Waktu Siap (Boot Time)**:
+  - Server API (dari AMI Panggang): `32 detik`
+  - Server Goreng (dari Cloud-Init Polos): `3 menit 45 detik`
+- **ID Instance API Sebelum**: `i-027a8901bae0c640a`
+- **ID Instance API Sesudah**: `i-09c97b4992bf0ddbf`
+- **Jeda Layanan (Downtime)**: `75 detik` (menghabiskan 5,78% dari anggaran waktu tidak tersedia bulanan 21,6 menit E4)
+- **Tautan Pull Request**: `https://github.com/vanysalsabila/koma-infra/pull/2`
+- **NIM Peninjau**: `123450002`
+
+---
+
 ## Potret Tugas
 - AMI aktif awal: `koma-123450022-m02-api-v1` (`ami-09f29c839d5eb91bc`)
 - AMI aktif kedua: `koma-123450022-m02-api-v2` (`ami-0dcf0d5ea0aaac2a9`)

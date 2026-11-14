@@ -163,3 +163,48 @@ resource "aws_instance" "api" {
     versi = var.versi
   }
 }
+
+# ---------------------------------------------------------------------------
+# Instance Server Goreng (diluncurkan langsung dari AL2023 via cloud-init)
+# ---------------------------------------------------------------------------
+
+resource "aws_instance" "goreng" {
+  count                       = var.jumlah_server_goreng
+  ami                         = data.aws_ami.al2023.id
+  instance_type               = "t3.micro"
+  associate_public_ip_address = true
+  vpc_security_group_ids      = [aws_security_group.api.id]
+
+  metadata_options {
+    http_tokens = "required" # IMDSv2
+  }
+
+  root_block_device {
+    volume_type = "gp3"
+    volume_size = 8
+    encrypted   = true
+  }
+
+  user_data = <<-EOF
+    #cloud-config
+    write_files:
+      - path: /opt/koma/koma_api.py
+        permissions: "0755"
+        encoding: b64
+        content: ${base64encode(file("${path.module}/../../app/koma_api.py"))}
+      - path: /etc/systemd/system/koma-api.service
+        permissions: "0644"
+        encoding: b64
+        content: ${base64encode(local.service_unit)}
+    runcmd:
+      - systemctl daemon-reload
+      - systemctl enable --now koma-api.service
+  EOF
+
+  tags = {
+    Name  = "koma-${var.nim}-m02-goreng-${count.index + 1}"
+    peran = "goreng"
+    versi = var.versi
+  }
+}
+
