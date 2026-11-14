@@ -185,8 +185,8 @@ resource "aws_ebs_volume" "data" {
 }
 
 resource "aws_volume_attachment" "db_data" {
-  device_name                  = "/dev/sdf"
-  volume_id                    = aws_ebs_volume.data.id
-  instance_id                  = aws_instance.db.id
+  device_name                    = "/dev/sdf"
+  volume_id                      = aws_ebs_volume.data.id
+  instance_id                    = aws_instance.db.id
   stop_instance_before_detaching = true
 }

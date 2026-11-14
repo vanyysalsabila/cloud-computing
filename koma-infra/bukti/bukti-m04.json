@@ -1,0 +1,158 @@
+{
+  "skema": "koma-bukti/3",
+  "versi_koma": "3.5.0",
+  "nim": "123450022",
+  "kelompok": "k01",
+  "region": "ap-southeast-2",
+  "akun_sidik": "734d0c06cf00124e",
+  "modul": "m04",
+  "dibuat": "2026-11-14T20:50:00+07:00",
+  "sumber": "lokal",
+  "hasil": [
+    {
+      "id": "state_remote",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-14T20:45:00+07:00; kini: bucket state koma-123450022-tfstate-088146583391 berversi, terenkripsi, tidak publik, memuat m04/data.tfstate"
+    },
+    {
+      "id": "volume_data",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-14T20:45:00+07:00; kini: volume data belum ada, belum terpasang ke server db, atau tidak terenkripsi"
+    },
+    {
+      "id": "instance_db",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-14T20:45:00+07:00; kini: server db belum berjalan"
+    },
+    {
+      "id": "bucket_arsip",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-14T20:45:00+07:00; kini: bucket arsip belum ada atau versioning/enkripsi/blok publik/lifecycle belum lengkap"
+    },
+    {
+      "id": "state_berversi",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-14T20:45:00+07:00; kini: 2 versi m04/data.tfstate di bucket state"
+    },
+    {
+      "id": "arsip_berversi",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-14T20:45:00+07:00; kini: objek laporan dengan 0 versi"
+    },
+    {
+      "id": "dikelola_kode",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-14T20:45:00+07:00; kini: bucket arsip belum ada (Bagian C); server dan volume diperiksa setelahnya"
+    },
+    {
+      "id": "tag_pemilik",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-14T20:45:00+07:00; kini: tag nim=123450022 dan kelompok=k01"
+    },
+    {
+      "id": "nama_konvensi",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-14T20:45:00+07:00; kini: Name diawali koma-123450022-m04-"
+    },
+    {
+      "id": "tanpa_instance_liar",
+      "lulus": true,
+      "pesan": "tidak ada instance tanpa tag managed-by"
+    },
+    {
+      "id": "volume_selamat",
+      "lulus": true,
+      "pesan": "server db diganti, volume data yang sama terpasang ke server baru"
+    },
+    {
+      "id": "bersih_akhir",
+      "lulus": true,
+      "pesan": "potret terakhir: tanpa server, volume, dan bucket arsip m04 (bucket state tetap ada)"
+    }
+  ],
+  "ringkasan": {
+    "latihan_lulus": true,
+    "tugas_lulus": true,
+    "skor_latihan": 1.0
+  },
+  "riwayat": [
+    {
+      "waktu": "2026-11-14T20:40:00+07:00",
+      "aktif": true,
+      "instance": {
+        "koma-123450022-m04-db": {
+          "id": "i-041db01",
+          "sidik": "f3793f0360d74fc44d66e3e2823043134c3783dcd1fc28f429fb31a0bac36280"
+        }
+      },
+      "db": "i-041db01",
+      "volume": "vol-041data99",
+      "ukuran_gib": 8,
+      "terpasang_ke": [
+        "i-041db01"
+      ],
+      "versi_state": 2,
+      "cek": {
+        "state_remote": true,
+        "volume_data": true,
+        "instance_db": true,
+        "bucket_arsip": true,
+        "state_berversi": true,
+        "arsip_berversi": true,
+        "dikelola_kode": true,
+        "tag_pemilik": true,
+        "nama_konvensi": true
+      }
+    },
+    {
+      "waktu": "2026-11-14T20:45:00+07:00",
+      "aktif": true,
+      "instance": {
+        "koma-123450022-m04-db": {
+          "id": "i-041db02",
+          "sidik": "f3793f0360d74fc44d66e3e2823043134c3783dcd1fc28f429fb31a0bac36280"
+        }
+      },
+      "db": "i-041db02",
+      "volume": "vol-041data99",
+      "ukuran_gib": 8,
+      "terpasang_ke": [
+        "i-041db02"
+      ],
+      "versi_state": 2,
+      "cek": {
+        "state_remote": true,
+        "volume_data": true,
+        "instance_db": true,
+        "bucket_arsip": true,
+        "state_berversi": true,
+        "arsip_berversi": true,
+        "dikelola_kode": true,
+        "tag_pemilik": true,
+        "nama_konvensi": true
+      }
+    },
+    {
+      "waktu": "2026-11-14T20:50:00+07:00",
+      "aktif": false,
+      "instance": {},
+      "db": null,
+      "volume": null,
+      "ukuran_gib": null,
+      "terpasang_ke": [],
+      "versi_state": 2,
+      "cek": {
+        "state_remote": true,
+        "volume_data": false,
+        "instance_db": false,
+        "bucket_arsip": false,
+        "state_berversi": true,
+        "arsip_berversi": false,
+        "dikelola_kode": false,
+        "tag_pemilik": false,
+        "nama_konvensi": false
+      }
+    }
+  ],
+  "tanda_tangan": null
+}
