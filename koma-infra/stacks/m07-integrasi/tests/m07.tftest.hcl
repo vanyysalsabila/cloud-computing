@@ -60,6 +60,74 @@ run "dev_kecil_tanpa_dlq" {
   }
 }
 
-# TODO C.4  run "prod_dari_kode_yang_sama" (apply, nilai prod): memori 256, DLQ ada, nama bucket
-# TODO C.4  run "rahasia_di_dev_ditolak", "pusat_biaya_tak_sah", "ukuran_di_luar_preset" (plan, expect_failures)
-# TODO C.4  run "prod_tanpa_dlq_diperingatkan" (plan, expect_failures = [check.prod_tangguh])
+run "prod_dari_kode_yang_sama" {
+  command = apply
+
+  variables {
+    lingkungan   = "prod"
+    cost_center  = "CC-210"
+    data_class   = "rahasia"
+    ukuran       = "sedang"
+    retensi_hari = 7
+    dengan_dlq   = true
+    anggaran_usd = 5
+  }
+
+  assert {
+    condition     = module.jalur.memori_mb == 256
+    error_message = "prod memakai preset sedang (256 MB)"
+  }
+  assert {
+    condition     = module.jalur.dlq_url != null
+    error_message = "prod wajib memakai DLQ"
+  }
+  assert {
+    condition     = output.bucket_arsip == "koma-121450001-m07-prod-arsip-111122223333"
+    error_message = "nama bucket prod mengikuti pola koma-<nim>-m07-prod-arsip-<akun>"
+  }
+}
+
+run "rahasia_di_dev_ditolak" {
+  command = plan
+
+  variables {
+    data_class = "rahasia"
+  }
+
+  expect_failures = [var.data_class]
+}
+
+run "pusat_biaya_tak_sah" {
+  command = plan
+
+  variables {
+    cost_center = "DIVISI-A"
+  }
+
+  expect_failures = [var.cost_center]
+}
+
+run "ukuran_di_luar_preset" {
+  command = plan
+
+  variables {
+    ukuran = "besar"
+  }
+
+  expect_failures = [var.ukuran]
+}
+
+run "prod_tanpa_dlq_diperingatkan" {
+  command = plan
+
+  variables {
+    lingkungan   = "prod"
+    cost_center  = "CC-210"
+    data_class   = "rahasia"
+    ukuran       = "sedang"
+    dengan_dlq   = false
+    anggaran_usd = 5
+  }
+
+  expect_failures = [check.prod_tangguh]
+}

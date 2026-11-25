@@ -111,5 +111,8 @@ jobs:
           tofu -chdir="$STACK" plan "${ARGS[@]}"
           tofu -chdir="$STACK" show -json rencana.tfplan > rencana.plan.json
           tofu -chdir="$STACK" show -no-color rencana.tfplan | tail -n 40 >> "$GITHUB_STEP_SUMMARY"
-      # TODO E.3  langkah "Gerbang kebijakan (Conftest, namespace m07)" atas rencana.plan.json
-      # TODO E.3  langkah "Terapkan" (hanya bila bukan pull_request): apply rencana.tfplan
+      - name: Gerbang kebijakan (Conftest)
+        run: conftest test "$STACK/rencana.plan.json" --policy policy --namespace m07
+      - name: Terapkan
+        if: github.event_name != 'pull_request'
+        run: tofu -chdir="$STACK" apply -input=false rencana.tfplan

@@ -45,7 +45,10 @@ variable "data_class" {
     condition     = contains(["publik", "internal", "rahasia"], var.data_class)
     error_message = "data_class hanya publik, internal, atau rahasia."
   }
-  # TODO C.1  validasi kedua: data rahasia hanya boleh di lingkungan prod (G4)
+  validation {
+    condition     = var.data_class != "rahasia" || var.lingkungan == "prod"
+    error_message = "Data rahasia hanya boleh di lingkungan prod (G4)."
+  }
 }
 
 variable "ukuran" {

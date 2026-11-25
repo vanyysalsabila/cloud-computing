@@ -72,12 +72,80 @@ deny contains msg if {
 }
 
 # ---------------------------------------------------------------- aturan 3
-# TODO C.5  antrean -antrean di prod wajib disertai antrean -gagal prod di plan yang sama.
-#           (redrive_policy tidak dapat dipakai: lihat naskah, after_unknown.)
+# antrean -antrean di prod wajib disertai antrean -gagal prod di plan yang sama.
+
+antrean_gagal_ada(nama_antrean) if {
+	some dlq in diubah
+	dlq.type == "aws_sqs_queue"
+	dlq.change.after.name == concat("", [trim_suffix(nama_antrean, "-antrean"), "-gagal"])
+}
+
+deny contains msg if {
+	some rc in bertag
+	rc.type == "aws_sqs_queue"
+	tag(rc, "lingkungan") == "prod"
+	endswith(rc.change.after.name, "-antrean")
+	not antrean_gagal_ada(rc.change.after.name)
+	msg := sprintf("%s: antrean prod (%s) wajib disertai antrean DLQ (-gagal)", [rc.address, rc.change.after.name])
+}
 
 # ---------------------------------------------------------------- aturan 4
-# TODO C.5  fungsi Lambda prod tidak boleh < 256 MB; fungsi mana pun maks. 512 MB dan timeout maks. 30 detik.
+# fungsi Lambda prod tidak boleh < 256 MB; fungsi mana pun maks. 512 MB dan timeout maks. 30 detik.
+
+deny contains msg if {
+	some rc in bertag
+	rc.type == "aws_lambda_function"
+	tag(rc, "lingkungan") == "prod"
+	is_number(rc.change.after.memory_size)
+	rc.change.after.memory_size < 256
+	msg := sprintf("%s: fungsi Lambda prod minimal 256 MB (terpasang %d MB)", [rc.address, rc.change.after.memory_size])
+}
+
+deny contains msg if {
+	some rc in diubah
+	rc.type == "aws_lambda_function"
+	is_number(rc.change.after.memory_size)
+	rc.change.after.memory_size > 512
+	msg := sprintf("%s: fungsi Lambda melebihi batas 512 MB (terpasang %d MB)", [rc.address, rc.change.after.memory_size])
+}
+
+deny contains msg if {
+	some rc in diubah
+	rc.type == "aws_lambda_function"
+	is_number(rc.change.after.timeout)
+	rc.change.after.timeout > 30
+	msg := sprintf("%s: timeout Lambda melebihi batas 30 detik (terpasang %d detik)", [rc.address, rc.change.after.timeout])
+}
 
 # ---------------------------------------------------------------- aturan 5
-# TODO C.5  kebijakan IAM inline (aws_iam_role_policy, aws_iam_policy) tanpa aksi "*" atau "layanan:*"
-#           (salin pembantu aksi() dan wildcard() dari m05.rego, ganti paketnya).
+# kebijakan IAM inline (aws_iam_role_policy, aws_iam_policy) tanpa aksi "*" atau "layanan:*".
+
+pernyataan_iam(doc) := doc.Statement if is_array(doc.Statement)
+
+pernyataan_iam(doc) := [doc.Statement] if is_object(doc.Statement)
+
+aksi_wildcard(s) if s == "*"
+
+aksi_wildcard(s) if endswith(s, ":*")
+
+aksi_liar(a) if {
+	is_string(a)
+	aksi_wildcard(a)
+}
+
+aksi_liar(a) if {
+	is_array(a)
+	some item in a
+	aksi_wildcard(item)
+}
+
+deny contains msg if {
+	some rc in diubah
+	rc.type in {"aws_iam_role_policy", "aws_iam_policy"}
+	pol := rc.change.after.policy
+	is_string(pol)
+	s := pernyataan_iam(json.unmarshal(pol))[_]
+	s.Effect == "Allow"
+	aksi_liar(s.Action)
+	msg := sprintf("%s: kebijakan IAM mengizinkan aksi wildcard (* atau <layanan>:*)", [rc.address])
+}
