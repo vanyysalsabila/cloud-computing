@@ -1,0 +1,3 @@
+# Salin menjadi terraform.tfvars (diabaikan Git), lalu isi milik Anda.
+nim      = "121450001"
+kelompok = "k00"

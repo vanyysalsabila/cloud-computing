@@ -49,7 +49,7 @@ def kumpul(api, ident: Mapping[str, str]) -> dict[str, Any]:
         "role": k.role_trust(api, f"koma-{ident['nim']}-pipeline"),
         "jejak": k.jejak_pipeline(api, ident["nim"]),
         "bertag": k.sumber_bertag(api, ident["nim"], MODUL),
-        "liar": k.instance_liar(api),
+        "liar": k.instance_liar(api, k.nim_bersama(ident)),
     }
 
 

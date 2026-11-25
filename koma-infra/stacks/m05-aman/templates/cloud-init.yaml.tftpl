@@ -1,0 +1,56 @@
+#cloud-config
+# Rahasia TIDAK ditulis di sini. Setiap kali layanan dimulai (boot, reboot, restart), systemd
+# menjalankan koma-rahasia.sh sebagai root: skrip itu mengambil nilai terbaru dari Parameter Store
+# memakai role IAM server dan menyimpannya di berkas yang hanya dapat dibaca root. Rotasi password
+# cukup diikuti reboot server.
+write_files:
+  - path: /opt/koma/koma_api.py
+    permissions: "0755"
+    encoding: gz+b64
+    content: ${aplikasi_gz}
+  - path: /etc/koma/koma.env
+    permissions: "0644"
+    content: |
+      KOMA_VERSI=${versi}
+      KOMA_PERAN=api
+  - path: /usr/local/bin/koma-rahasia.sh
+    permissions: "0755"
+    content: |
+      #!/bin/bash
+      set -euo pipefail
+      umask 077
+      # Kredensial role bisa belum tersedia beberapa detik setelah boot.
+      NILAI=""
+      for i in $(seq 1 30); do
+        NILAI=$(aws ssm get-parameter --region ${region} --name ${parameter} \
+          --with-decryption --query Parameter.Value --output text) && break
+        sleep 5
+      done
+      if [ -z "$NILAI" ]; then
+        echo "KOMA-PENANDA galat: ${parameter} tidak terbaca (izin role, kunci KMS, atau egress 443)" > /dev/console
+        exit 1
+      fi
+      echo "KOMA_DB_PASSWORD=$NILAI" > /etc/koma/db.env
+      unset NILAI
+      echo "KOMA-PENANDA rahasia dimuat: $(stat -c '%a %U' /etc/koma/db.env) dari ${parameter}" > /dev/console
+  - path: /etc/systemd/system/koma-api.service
+    permissions: "0644"
+    content: |
+      [Unit]
+      Description=koma-api ${versi}
+      After=network-online.target
+
+      [Service]
+      ExecStartPre=+/usr/local/bin/koma-rahasia.sh
+      EnvironmentFile=/etc/koma/koma.env
+      EnvironmentFile=-/etc/koma/db.env
+      ExecStart=/usr/bin/python3 /opt/koma/koma_api.py --port 80
+      DynamicUser=yes
+      AmbientCapabilities=CAP_NET_BIND_SERVICE
+      Restart=always
+
+      [Install]
+      WantedBy=multi-user.target
+runcmd:
+  - systemctl daemon-reload
+  - systemctl enable --now koma-api.service

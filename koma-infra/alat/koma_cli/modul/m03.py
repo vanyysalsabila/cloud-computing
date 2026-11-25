@@ -32,8 +32,10 @@ NEGATIF = (("internet", "web", 80), ("internet", "db", 5432), ("alb", "db", 5432
 
 def kumpul(api, ident: Mapping[str, str]) -> dict[str, Any]:
     vpcs = k.vpc_modul(api, ident["nim"], MODUL)
+    # Akun bersama (IAM user di akun dosen): NAT dihitung hanya di VPC milik NIM ini.
+    vpc_ids = [v["id"] for v in vpcs] if k.nim_bersama(ident) else None
     snap: dict[str, Any] = {"vpcs": vpcs, "instances": k.instance_modul(api, ident["nim"], MODUL),
-                            "nat": k.nat_hidup(api), "liar": k.instance_liar(api),
+                            "nat": k.nat_hidup(api, vpc_ids), "liar": k.instance_liar(api, k.nim_bersama(ident)),
                             "subnets": [], "route_tables": [], "sg": [], "lbs": []}
     for v in vpcs:
         snap["subnets"] += k.subnets(api, v["id"])

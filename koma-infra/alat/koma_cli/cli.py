@@ -15,7 +15,7 @@ import urllib.request
 import zipfile
 from pathlib import Path, PurePosixPath
 
-from . import VERSI, bukti, kumpul, legacy, ukur
+from . import VERSI, bukti, kumpul, legacy, sigv4, ukur
 from .awsapi import AwsCli, GalatAws
 from .modul import TERSEDIA, muat
 from .umum import sekarang
@@ -48,6 +48,9 @@ def _api_dan_ident() -> tuple[AwsCli, dict[str, str]]:
     ident = _identitas()
     api = AwsCli(ident["region"])
     ident = {**ident, **kumpul.identitas_akun(api)}
+    if ident.get("verifier_iam"):
+        # Satu akun dosen dipakai banyak mahasiswa: cek dan `koma sisa` hanya melihat milik NIM ini.
+        ident["akun_bersama"] = True
     return api, ident
 
 
@@ -85,7 +88,7 @@ def cmd_init(a) -> int:
         lama = json.loads(IDENTITAS.read_text(encoding="utf-8"))
     except (OSError, ValueError):
         pass
-    baru = {**{k: v for k, v in lama.items() if k in ("verifier_url", "token")},
+    baru = {**{k: v for k, v in lama.items() if k in ("verifier_url", "token", "verifier_iam")},
             "nim": a.nim, "kelompok": a.kelompok, "region": a.region}
     IDENTITAS.write_text(json.dumps(baru, indent=2) + "\n", encoding="utf-8")
     _cetak(f"Identitas ditulis ke {IDENTITAS.relative_to(AKAR)}: NIM {a.nim}, kelompok {a.kelompok}, region {a.region}")
@@ -97,7 +100,8 @@ def cmd_info(a) -> int:
     _cetak(f"koma      : {VERSI}")
     _cetak(f"repo      : {AKAR}")
     _cetak(f"NIM       : {ident['nim']}   kelompok: {ident['kelompok']}   region: {ident['region']}")
-    _cetak(f"verifier  : {ident.get('verifier_url') or 'belum diatur (koma verifier, mulai Modul 03)'}")
+    cara = " (identitas IAM user akun dosen, tanpa token)" if ident.get("verifier_iam") else ""
+    _cetak(f"verifier  : {(ident.get('verifier_url') or 'belum diatur (koma verifier, mulai Modul 03)') + cara}")
     for nama, cmd in (("tofu", ["tofu", "version"]), ("aws", ["aws", "--version"]), ("git", ["git", "--version"]),
                       ("python", [sys.executable, "--version"])):
         _cetak(f"{nama:<10}: {_versi_alat(cmd)}")
@@ -155,20 +159,42 @@ def cmd_verifier(a) -> int:
     ident = _identitas()
     if not re.fullmatch(r"https://[A-Za-z0-9.-]+(/.*)?", a.url):
         raise Galat("URL verifier harus https://... (dari dosen).")
-    if not re.fullmatch(r"[0-9a-f]{24}", a.token):
-        raise Galat("Token harus 24 karakter heksadesimal (dari dosen).")
-    IDENTITAS.write_text(json.dumps({**ident, "verifier_url": a.url, "token": a.token}, indent=2) + "\n",
+    lama = {k: v for k, v in ident.items() if k not in ("token", "verifier_iam", "akun")}
+    if a.iam:
+        # IAM user di akun dosen: identitas dibuktikan lewat sts:GetCallerIdentity bertanda tangan.
+        IDENTITAS.write_text(json.dumps({**lama, "verifier_url": a.url, "verifier_iam": True}, indent=2) + "\n",
+                             encoding="utf-8")
+        _cetak("Alamat verifier disimpan di .koma/identitas.json (tidak di-commit).")
+        _cetak("Mode IAM user akun dosen: tanpa token; verifier mengenali Anda dari IAM user yang sedang masuk.")
+        return 0
+    if not a.token or not re.fullmatch(r"[0-9a-f]{24}", a.token):
+        raise Galat("Token harus 24 karakter heksadesimal (dari dosen). "
+                    "Bila Anda memakai IAM user dari akun dosen, pakai --iam tanpa --token.")
+    IDENTITAS.write_text(json.dumps({**lama, "verifier_url": a.url, "token": a.token}, indent=2) + "\n",
                          encoding="utf-8")
     _cetak("Alamat verifier dan token disimpan di .koma/identitas.json (tidak di-commit).")
     return 0
 
 
+def _identitas_iam(ident: dict) -> dict:
+    """Permintaan GetCallerIdentity bertanda tangan untuk verifier (kunci rahasia tidak dikirim)."""
+    kred = AwsCli(ident["region"]).panggil("configure", "export-credentials", "--format", "process")
+    if not kred.get("AccessKeyId") or not kred.get("SecretAccessKey"):
+        raise Galat("Kredensial AWS tidak terbaca. Jalankan `aws login` (atau periksa profil IAM user) lalu ulangi.")
+    return sigv4.tandatangani_caller_identity(kred, ident["region"], sigv4.PENANDA)
+
+
 def _kirim_verifier(ident: dict, mod, laporan: dict) -> dict:
-    if not ident.get("verifier_url") or not ident.get("token"):
-        raise Galat("Modul ini diperiksa verifier dosen. Jalankan dulu: koma verifier --url <URL> --token <TOKEN>")
-    badan = json.dumps({"nim": ident["nim"], "kelompok": ident["kelompok"], "token": ident["token"],
-                        "akun": ident["akun"], "region": ident["region"], "modul": mod.MODUL,
-                        "versi_koma": VERSI, "laporan_klien": laporan}).encode()
+    if not ident.get("verifier_url") or not (ident.get("token") or ident.get("verifier_iam")):
+        raise Galat("Modul ini diperiksa verifier dosen. Jalankan dulu: koma verifier --url <URL> --token <TOKEN> "
+                    "(IAM user dari akun dosen: koma verifier --url <URL> --iam)")
+    isi = {"nim": ident["nim"], "kelompok": ident["kelompok"], "akun": ident["akun"], "region": ident["region"],
+           "modul": mod.MODUL, "versi_koma": VERSI, "laporan_klien": laporan}
+    if ident.get("verifier_iam"):
+        isi["identitas_iam"] = _identitas_iam(ident)
+    else:
+        isi["token"] = ident["token"]
+    badan = json.dumps(isi).encode()
     req = urllib.request.Request(ident["verifier_url"], data=badan, method="POST",
                                  headers={"content-type": "application/json"})
     try:
@@ -247,7 +273,7 @@ def cmd_sehat(a) -> int:
 
 def cmd_sisa(a) -> int:
     api, ident = _api_dan_ident()
-    s = kumpul.sisa(api)
+    s = kumpul.sisa(api, nim=ident["nim"] if ident.get("akun_bersama") else None)
     tetap = [x for x in s["bertag"] if ":budgets::" in x or ":budget/" in x or x.endswith(":role/koma-verifier-ro")
              or (x.startswith("arn:aws:s3:::koma-") and "-tfstate-" in x)]
     lain = [x for x in s["bertag"] if x not in tetap]
@@ -420,6 +446,31 @@ def cmd_showback(a) -> int:
     return 0
 
 
+def cmd_pesan(a) -> int:
+    url = (a.url if a.url.startswith("http") else "http://" + a.url).rstrip("/")
+    gerai = ("G-01", "G-02", "G-03", "G-04")
+    hasil_kirim = []
+    for i in range(1, a.jumlah + 1):
+        badan = json.dumps({"gerai": gerai[i % len(gerai)], "total": 25000 + 1500 * i}).encode()
+        req = urllib.request.Request(url + "/pesanan", data=badan, method="POST",
+                                     headers={"content-type": "application/json"})
+        try:
+            with urllib.request.urlopen(req, timeout=10) as r:  # noqa: S310 (ALB milik sendiri)
+                isi = json.loads(r.read().decode())
+                hasil_kirim.append({"kode": r.status, "id_pesanan": isi.get("id_pesanan"), "versi": isi.get("versi")})
+        except urllib.error.HTTPError as exc:
+            hasil_kirim.append({"kode": exc.code, "galat": exc.read().decode(errors="replace")[:200]})
+        except (urllib.error.URLError, OSError) as exc:
+            hasil_kirim.append({"kode": None, "galat": str(exc)})
+    for h in hasil_kirim:
+        _cetak(f"  {h['kode']}  {h.get('id_pesanan') or h.get('galat')}  {h.get('versi') or ''}")
+    sukses = sum(1 for h in hasil_kirim if h["kode"] == 202)
+    path = _tulis_koma(f"pesan-{a.modul}.json", {"url": url, "terkirim": sukses, "gagal": len(hasil_kirim) - sukses,
+                                                "pesan": hasil_kirim})
+    _cetak(f"Diterima layanan: {sukses} dari {len(hasil_kirim)}. Ringkasan: {path.relative_to(AKAR)}")
+    return 0 if sukses == len(hasil_kirim) else 1
+
+
 def buat_parser() -> argparse.ArgumentParser:
     ap = argparse.ArgumentParser(prog="koma", description=f"Alat praktikum Komputasi Awan (versi {VERSI}).")
     sub = ap.add_subparsers(dest="perintah", required=True)
@@ -439,7 +490,10 @@ def buat_parser() -> argparse.ArgumentParser:
     p.set_defaults(fn=cmd_cek)
     p = sub.add_parser("verifier", help="simpan alamat verifier dan token dari dosen (M03+)")
     p.add_argument("--url", required=True)
-    p.add_argument("--token", required=True)
+    cara = p.add_mutually_exclusive_group(required=True)
+    cara.add_argument("--token", help="token pribadi dari dosen (akun AWS milik sendiri)")
+    cara.add_argument("--iam", action="store_true",
+                      help="IAM user dari akun dosen: tanpa token, identitas dibaca dari IAM user")
     p.set_defaults(fn=cmd_verifier)
     p = sub.add_parser("sehat", help="tunggu sampai <url>/health menjawab 200")
     p.add_argument("url")
@@ -470,6 +524,11 @@ def buat_parser() -> argparse.ArgumentParser:
     p = sub.add_parser("showback", help="M07: resource bertag dikelompokkan per lingkungan dan cost-center")
     p.add_argument("modul", nargs="?", default="m07", help="modul (bawaan m07) atau 'semua'")
     p.set_defaults(fn=cmd_showback)
+    p = sub.add_parser("pesan", help="M08: kirim pesanan sintetis ke <url>/pesanan (API di ECS)")
+    p.add_argument("url")
+    p.add_argument("--jumlah", type=int, default=5)
+    p.add_argument("--modul", default="m08")
+    p.set_defaults(fn=cmd_pesan)
     p = sub.add_parser("arsip", help="buat koma-module-NN.zip dari tag mNN")
     p.add_argument("modul")
     p.set_defaults(fn=cmd_arsip)

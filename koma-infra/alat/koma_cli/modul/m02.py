@@ -35,10 +35,10 @@ def kumpul(api, ident: Mapping[str, str]) -> dict[str, Any]:
     return {
         "instances": inst,
         "images": k.images_modul(api, ident["nim"], MODUL),
-        "snapshot_yatim": k.snapshot_yatim(api),
+        "snapshot_yatim": k.snapshot_yatim(api, k.nim_bersama(ident)),
         "sg": k.security_groups(api, sg_ids),
         "probes": probes,
-        "liar": k.instance_liar(api),
+        "liar": k.instance_liar(api, k.nim_bersama(ident)),
     }
 
 

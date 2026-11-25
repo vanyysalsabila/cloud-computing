@@ -65,7 +65,7 @@ def kumpul(api, ident: Mapping[str, str]) -> dict[str, Any]:
         "akun_blok": k.blok_publik_akun(api, ident["akun"]),
         "state": state[0] if state else None,
         "format_state": k.format_state(k.awal_objek(api, _nama_state(ident), STATE_KEY)) if state else "tidak-ada",
-        "liar": k.instance_liar(api),
+        "liar": k.instance_liar(api, k.nim_bersama(ident)),
     }
 
 

@@ -40,7 +40,7 @@ def kumpul(api, ident: Mapping[str, str]) -> dict[str, Any]:
         "volumes": k.volumes_modul(api, ident["nim"], MODUL),
         "state": state[0] if state else None,
         "arsip": arsip[0] if arsip else None,
-        "liar": k.instance_liar(api),
+        "liar": k.instance_liar(api, k.nim_bersama(ident)),
     }
 
 

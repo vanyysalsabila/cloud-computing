@@ -24,7 +24,7 @@ ARSIP = ["TIM.md", "log-keputusan.md", "stacks/m00-fondasi", "stacks/m01-sandbox
 def kumpul(api, ident: Mapping[str, str]) -> dict[str, Any]:
     return {
         "instances": k.instance_modul(api, ident["nim"], MODUL),
-        "liar": k.instance_liar(api),
+        "liar": k.instance_liar(api, k.nim_bersama(ident)),
         "anggaran": k.anggaran(api, ident["akun"]),
     }
 

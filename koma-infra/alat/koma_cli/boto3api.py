@@ -14,7 +14,7 @@ from .awsapi import GalatAws
 
 #: parameter yang menerima daftar
 DAFTAR = {"Filters", "Filter", "Owners", "OwnerIds", "GroupIds", "TagFilters", "Names", "InstanceIds",
-          "ResourceTypeFilters", "AttributeNames"}
+          "ResourceTypeFilters", "AttributeNames", "RepositoryNames", "Clusters", "Services", "ResourceIds"}
 #: nama parameter boto3 yang tidak mengikuti pola kapitalisasi flag CLI
 NAMA_KHUSUS = {"OpenIdConnectProviderArn": "OpenIDConnectProviderArn"}
 #: layanan global yang harus dipanggil di us-east-1
@@ -22,7 +22,7 @@ GLOBAL = {"budgets": "us-east-1"}
 #: nama layanan AWS CLI -> nama klien boto3
 KLIEN = {"s3api": "s3"}
 #: layanan yang nama parameternya lowerCamelCase (logGroupName, bukan LogGroupName)
-CAMEL_KECIL = {"logs"}
+CAMEL_KECIL = {"logs", "ecr", "ecs"}
 
 
 def _nama_param(flag: str) -> str:

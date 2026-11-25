@@ -47,7 +47,7 @@ def kumpul(api, ident: Mapping[str, str]) -> dict[str, Any]:
         "dasbor": k.dasbor_awalan(api, aw),
         "log": k.log_group_awalan(api, _log_group(ident)),
         "bertag": k.sumber_bertag(api, ident["nim"], MODUL),
-        "liar": k.instance_liar(api),
+        "liar": k.instance_liar(api, k.nim_bersama(ident)),
     }
 
 

@@ -1,0 +1,27 @@
+#cloud-config
+write_files:
+  - path: /opt/koma/koma_api.py
+    permissions: "0755"
+    encoding: gz+b64
+    content: ${aplikasi_gz}
+  - path: /etc/systemd/system/koma-api.service
+    permissions: "0644"
+    content: |
+      [Unit]
+      Description=koma-api ${versi}
+      After=network-online.target
+
+      [Service]
+      Environment=KOMA_VERSI=${versi}
+      Environment=KOMA_PERAN=api
+      Environment=KOMA_DB_PASSWORD=${db_password}
+      ExecStart=/usr/bin/python3 /opt/koma/koma_api.py --port 80
+      DynamicUser=yes
+      AmbientCapabilities=CAP_NET_BIND_SERVICE
+      Restart=always
+
+      [Install]
+      WantedBy=multi-user.target
+runcmd:
+  - systemctl daemon-reload
+  - systemctl enable --now koma-api.service
