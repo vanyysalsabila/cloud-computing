@@ -1,0 +1,420 @@
+{
+  "skema": "koma-bukti/3",
+  "versi_koma": "3.7.0",
+  "nim": "123450022",
+  "kelompok": "k01",
+  "region": "ap-southeast-2",
+  "akun_sidik": "734d0c06cf00124e",
+  "modul": "m06",
+  "dibuat": "2026-11-25T10:26:52Z",
+  "sumber": "lokal",
+  "hasil": [
+    {
+      "id": "lb_sehat",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-25T10:25:16Z; kini: ALB belum ada, listener belum meneruskan ke target group modul, atau targetnya belum sehat"
+    },
+    {
+      "id": "alih_ke_hijau",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-25T10:25:16Z; kini: lalu lintas masih ke tidak ada target group, atau server hijau belum sehat"
+    },
+    {
+      "id": "alarm_latensi",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-25T10:25:16Z; kini: belum ada alarm TargetResponseTime untuk ALB modul"
+    },
+    {
+      "id": "dasbor_ada",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-25T10:25:16Z; kini: dasbor koma-123450022-m06 belum ada"
+    },
+    {
+      "id": "log_masuk",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-25T10:25:16Z; kini: log group /koma/123450022/m06/api belum ada atau belum menerima event"
+    },
+    {
+      "id": "dikelola_kode",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-25T10:25:16Z; kini: 11 resource m06 bertag managed-by=opentofu"
+    },
+    {
+      "id": "tag_pemilik",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-25T10:25:16Z; kini: tag nim=123450022 dan kelompok=k01"
+    },
+    {
+      "id": "nama_konvensi",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-25T10:25:16Z; kini: Name server diawali koma-123450022-m06-, ALB bernama koma-123450022-m06"
+    },
+    {
+      "id": "tanpa_instance_liar",
+      "lulus": true,
+      "pesan": "tidak ada instance tanpa tag managed-by"
+    },
+    {
+      "id": "legacy_diimpor",
+      "lulus": true,
+      "pesan": "server legacy pernah dikelola OpenTofu (diimpor)"
+    },
+    {
+      "id": "impor_tanpa_ganti",
+      "lulus": true,
+      "pesan": "server legacy yang sama: sebelum impor tanpa managed-by, sesudahnya dikelola"
+    },
+    {
+      "id": "alamat_tetap",
+      "lulus": true,
+      "pesan": "ALB yang sama meneruskan ke biru lalu ke hijau"
+    },
+    {
+      "id": "alarm_pernah_menyala",
+      "lulus": true,
+      "pesan": "alarm latensi pernah berstatus ALARM"
+    },
+    {
+      "id": "drift_terdeteksi",
+      "lulus": true,
+      "pesan": "tag diubah-manual pada server hijau tercatat di potret"
+    },
+    {
+      "id": "drift_direkonsiliasi",
+      "lulus": true,
+      "pesan": "tag diubah-manual hilang dari server hijau yang sama setelah apply"
+    },
+    {
+      "id": "legacy_dibongkar",
+      "lulus": true,
+      "pesan": "lalu lintas di hijau dan server legacy sudah tidak ada (contract)"
+    },
+    {
+      "id": "bersih_akhir",
+      "lulus": true,
+      "pesan": "potret terakhir: tanpa server dan ALB m06"
+    }
+  ],
+  "ringkasan": {
+    "latihan_lulus": true,
+    "tugas_lulus": true,
+    "skor_latihan": 1.0
+  },
+  "riwayat": [
+    {
+      "waktu": "2026-11-25T09:40:12Z",
+      "aktif": true,
+      "instance": {
+        "koma-123450022-m06-legacy": {
+          "id": "i-0d36c1811f243ed17",
+          "sidik": "7759a080872b0485be74cc1d4f4bcc699dfeb8db6081683812afdc5d06de87d7"
+        }
+      },
+      "legacy": {
+        "id": "i-0d36c1811f243ed17",
+        "dikelola": false
+      },
+      "hijau": null,
+      "alb": null,
+      "tg_aktif": null,
+      "pernah_alarm": false,
+      "cek": {
+        "lb_sehat": false,
+        "alih_ke_hijau": false,
+        "alarm_latensi": false,
+        "dasbor_ada": false,
+        "log_masuk": false,
+        "dikelola_kode": false,
+        "tag_pemilik": true,
+        "nama_konvensi": true
+      }
+    },
+    {
+      "waktu": "2026-11-25T09:43:24Z",
+      "aktif": true,
+      "instance": {
+        "koma-123450022-m06-legacy": {
+          "id": "i-0d36c1811f243ed17",
+          "sidik": "3879cd3af1212d3a41199c53460bb1dd2d2f037799f08f43f08c1c87cbb30442"
+        }
+      },
+      "legacy": {
+        "id": "i-0d36c1811f243ed17",
+        "dikelola": true
+      },
+      "hijau": null,
+      "alb": null,
+      "tg_aktif": null,
+      "pernah_alarm": false,
+      "cek": {
+        "lb_sehat": false,
+        "alih_ke_hijau": false,
+        "alarm_latensi": false,
+        "dasbor_ada": false,
+        "log_masuk": false,
+        "dikelola_kode": true,
+        "tag_pemilik": true,
+        "nama_konvensi": true
+      }
+    },
+    {
+      "waktu": "2026-11-25T09:51:28Z",
+      "aktif": true,
+      "instance": {
+        "koma-123450022-m06-hijau": {
+          "id": "i-0f9a280f272b35e30",
+          "sidik": "01940de698b5e11e7d0192fe22e1772d7c37d9212170b6697af803ee60207aac"
+        },
+        "koma-123450022-m06-legacy": {
+          "id": "i-0d36c1811f243ed17",
+          "sidik": "3879cd3af1212d3a41199c53460bb1dd2d2f037799f08f43f08c1c87cbb30442"
+        }
+      },
+      "legacy": {
+        "id": "i-0d36c1811f243ed17",
+        "dikelola": true
+      },
+      "hijau": {
+        "id": "i-0f9a280f272b35e30",
+        "drift": false
+      },
+      "alb": "arn:aws:elasticloadbalancing:ap-southeast-2:088146583391:loadbalancer/app/koma-123450022-m06/b23a0ac4d82ae032",
+      "tg_aktif": "biru",
+      "pernah_alarm": false,
+      "cek": {
+        "lb_sehat": true,
+        "alih_ke_hijau": false,
+        "alarm_latensi": false,
+        "dasbor_ada": false,
+        "log_masuk": false,
+        "dikelola_kode": true,
+        "tag_pemilik": true,
+        "nama_konvensi": true
+      }
+    },
+    {
+      "waktu": "2026-11-25T09:59:35Z",
+      "aktif": true,
+      "instance": {
+        "koma-123450022-m06-hijau": {
+          "id": "i-05bbd1aabb865f889",
+          "sidik": "01940de698b5e11e7d0192fe22e1772d7c37d9212170b6697af803ee60207aac"
+        },
+        "koma-123450022-m06-legacy": {
+          "id": "i-0d36c1811f243ed17",
+          "sidik": "3879cd3af1212d3a41199c53460bb1dd2d2f037799f08f43f08c1c87cbb30442"
+        }
+      },
+      "legacy": {
+        "id": "i-0d36c1811f243ed17",
+        "dikelola": true
+      },
+      "hijau": {
+        "id": "i-05bbd1aabb865f889",
+        "drift": false
+      },
+      "alb": "arn:aws:elasticloadbalancing:ap-southeast-2:088146583391:loadbalancer/app/koma-123450022-m06/b23a0ac4d82ae032",
+      "tg_aktif": "biru",
+      "pernah_alarm": false,
+      "cek": {
+        "lb_sehat": true,
+        "alih_ke_hijau": false,
+        "alarm_latensi": false,
+        "dasbor_ada": false,
+        "log_masuk": true,
+        "dikelola_kode": true,
+        "tag_pemilik": true,
+        "nama_konvensi": true
+      }
+    },
+    {
+      "waktu": "2026-11-25T10:06:19Z",
+      "aktif": true,
+      "instance": {
+        "koma-123450022-m06-hijau": {
+          "id": "i-05bbd1aabb865f889",
+          "sidik": "01940de698b5e11e7d0192fe22e1772d7c37d9212170b6697af803ee60207aac"
+        },
+        "koma-123450022-m06-legacy": {
+          "id": "i-0d36c1811f243ed17",
+          "sidik": "3879cd3af1212d3a41199c53460bb1dd2d2f037799f08f43f08c1c87cbb30442"
+        }
+      },
+      "legacy": {
+        "id": "i-0d36c1811f243ed17",
+        "dikelola": true
+      },
+      "hijau": {
+        "id": "i-05bbd1aabb865f889",
+        "drift": false
+      },
+      "alb": "arn:aws:elasticloadbalancing:ap-southeast-2:088146583391:loadbalancer/app/koma-123450022-m06/b23a0ac4d82ae032",
+      "tg_aktif": "hijau",
+      "pernah_alarm": false,
+      "cek": {
+        "lb_sehat": true,
+        "alih_ke_hijau": true,
+        "alarm_latensi": false,
+        "dasbor_ada": false,
+        "log_masuk": true,
+        "dikelola_kode": true,
+        "tag_pemilik": true,
+        "nama_konvensi": true
+      }
+    },
+    {
+      "waktu": "2026-11-25T10:18:46Z",
+      "aktif": true,
+      "instance": {
+        "koma-123450022-m06-hijau": {
+          "id": "i-05bbd1aabb865f889",
+          "sidik": "01940de698b5e11e7d0192fe22e1772d7c37d9212170b6697af803ee60207aac"
+        },
+        "koma-123450022-m06-legacy": {
+          "id": "i-0d36c1811f243ed17",
+          "sidik": "3879cd3af1212d3a41199c53460bb1dd2d2f037799f08f43f08c1c87cbb30442"
+        }
+      },
+      "legacy": {
+        "id": "i-0d36c1811f243ed17",
+        "dikelola": true
+      },
+      "hijau": {
+        "id": "i-05bbd1aabb865f889",
+        "drift": false
+      },
+      "alb": "arn:aws:elasticloadbalancing:ap-southeast-2:088146583391:loadbalancer/app/koma-123450022-m06/b23a0ac4d82ae032",
+      "tg_aktif": "hijau",
+      "pernah_alarm": true,
+      "cek": {
+        "lb_sehat": true,
+        "alih_ke_hijau": true,
+        "alarm_latensi": true,
+        "dasbor_ada": true,
+        "log_masuk": true,
+        "dikelola_kode": true,
+        "tag_pemilik": true,
+        "nama_konvensi": true
+      }
+    },
+    {
+      "waktu": "2026-11-25T10:20:31Z",
+      "aktif": true,
+      "instance": {
+        "koma-123450022-m06-hijau": {
+          "id": "i-05bbd1aabb865f889",
+          "sidik": "dd982e854b230e580899e7b24f05d4bb3e60f0bc48e641c118c436c62f78a563"
+        },
+        "koma-123450022-m06-legacy": {
+          "id": "i-0d36c1811f243ed17",
+          "sidik": "3879cd3af1212d3a41199c53460bb1dd2d2f037799f08f43f08c1c87cbb30442"
+        }
+      },
+      "legacy": {
+        "id": "i-0d36c1811f243ed17",
+        "dikelola": true
+      },
+      "hijau": {
+        "id": "i-05bbd1aabb865f889",
+        "drift": true
+      },
+      "alb": "arn:aws:elasticloadbalancing:ap-southeast-2:088146583391:loadbalancer/app/koma-123450022-m06/b23a0ac4d82ae032",
+      "tg_aktif": "hijau",
+      "pernah_alarm": true,
+      "cek": {
+        "lb_sehat": true,
+        "alih_ke_hijau": true,
+        "alarm_latensi": true,
+        "dasbor_ada": true,
+        "log_masuk": true,
+        "dikelola_kode": true,
+        "tag_pemilik": true,
+        "nama_konvensi": true
+      }
+    },
+    {
+      "waktu": "2026-11-25T10:21:06Z",
+      "aktif": true,
+      "instance": {
+        "koma-123450022-m06-hijau": {
+          "id": "i-05bbd1aabb865f889",
+          "sidik": "01940de698b5e11e7d0192fe22e1772d7c37d9212170b6697af803ee60207aac"
+        },
+        "koma-123450022-m06-legacy": {
+          "id": "i-0d36c1811f243ed17",
+          "sidik": "3879cd3af1212d3a41199c53460bb1dd2d2f037799f08f43f08c1c87cbb30442"
+        }
+      },
+      "legacy": {
+        "id": "i-0d36c1811f243ed17",
+        "dikelola": true
+      },
+      "hijau": {
+        "id": "i-05bbd1aabb865f889",
+        "drift": false
+      },
+      "alb": "arn:aws:elasticloadbalancing:ap-southeast-2:088146583391:loadbalancer/app/koma-123450022-m06/b23a0ac4d82ae032",
+      "tg_aktif": "hijau",
+      "pernah_alarm": true,
+      "cek": {
+        "lb_sehat": true,
+        "alih_ke_hijau": true,
+        "alarm_latensi": true,
+        "dasbor_ada": true,
+        "log_masuk": true,
+        "dikelola_kode": true,
+        "tag_pemilik": true,
+        "nama_konvensi": true
+      }
+    },
+    {
+      "waktu": "2026-11-25T10:25:16Z",
+      "aktif": true,
+      "instance": {
+        "koma-123450022-m06-hijau": {
+          "id": "i-05bbd1aabb865f889",
+          "sidik": "01940de698b5e11e7d0192fe22e1772d7c37d9212170b6697af803ee60207aac"
+        }
+      },
+      "legacy": null,
+      "hijau": {
+        "id": "i-05bbd1aabb865f889",
+        "drift": false
+      },
+      "alb": "arn:aws:elasticloadbalancing:ap-southeast-2:088146583391:loadbalancer/app/koma-123450022-m06/b23a0ac4d82ae032",
+      "tg_aktif": "hijau",
+      "pernah_alarm": true,
+      "cek": {
+        "lb_sehat": true,
+        "alih_ke_hijau": true,
+        "alarm_latensi": true,
+        "dasbor_ada": true,
+        "log_masuk": true,
+        "dikelola_kode": true,
+        "tag_pemilik": true,
+        "nama_konvensi": true
+      }
+    },
+    {
+      "waktu": "2026-11-25T10:26:52Z",
+      "aktif": false,
+      "instance": {},
+      "legacy": null,
+      "hijau": null,
+      "alb": null,
+      "tg_aktif": null,
+      "pernah_alarm": false,
+      "cek": {
+        "lb_sehat": false,
+        "alih_ke_hijau": false,
+        "alarm_latensi": false,
+        "dasbor_ada": false,
+        "log_masuk": false,
+        "dikelola_kode": true,
+        "tag_pemilik": true,
+        "nama_konvensi": false
+      }
+    }
+  ],
+  "tanda_tangan": null
+}

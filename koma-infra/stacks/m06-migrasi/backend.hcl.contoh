@@ -1,0 +1,7 @@
+# Salin menjadi backend.hcl, lalu ganti NIM dan ID akun dengan milik Anda
+# (nama bucket sama dengan backend.hcl stack m04-data).
+bucket       = "koma-121450001-tfstate-111122223333"
+key          = "m06/migrasi.tfstate"
+region       = "ap-southeast-2"
+encrypt      = true
+use_lockfile = true

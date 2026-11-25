@@ -1,0 +1,43 @@
+#cloud-config
+# Server hijau: koma-api versi baru yang menulis log permintaan ke berkas, dan CloudWatch agent
+# yang mengirim berkas itu ke log group ${log_group}.
+write_files:
+  - path: /opt/koma/koma_api.py
+    permissions: "0755"
+    encoding: gz+b64
+    content: ${aplikasi_gz}
+  - path: /etc/koma/koma.env
+    permissions: "0644"
+    content: |
+      KOMA_VERSI=${versi}
+      KOMA_PERAN=hijau
+  - path: /etc/systemd/system/koma-api.service
+    permissions: "0644"
+    content: |
+      [Unit]
+      Description=koma-api ${versi}
+      After=network-online.target
+
+      [Service]
+      EnvironmentFile=/etc/koma/koma.env
+      ExecStart=/usr/bin/python3 /opt/koma/koma_api.py --port 80
+      DynamicUser=yes
+      AmbientCapabilities=CAP_NET_BIND_SERVICE
+      StandardError=append:/var/log/koma/api.log
+      Restart=always
+
+      [Install]
+      WantedBy=multi-user.target
+  - path: /opt/aws/amazon-cloudwatch-agent/etc/koma.json
+    permissions: "0644"
+    content: |
+      {"logs": {"logs_collected": {"files": {"collect_list": [
+        {"file_path": "/var/log/koma/api.log", "log_group_name": "${log_group}",
+         "log_stream_name": "{instance_id}"}]}}}}
+runcmd:
+  - mkdir -p /var/log/koma && touch /var/log/koma/api.log && chmod 0755 /var/log/koma && chmod 0644 /var/log/koma/api.log
+  - systemctl daemon-reload
+  - systemctl enable --now koma-api.service
+  - dnf install -y amazon-cloudwatch-agent
+  - /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:/opt/aws/amazon-cloudwatch-agent/etc/koma.json
+  - echo "KOMA-PENANDA hijau ${versi} siap, log ke ${log_group}" > /dev/console
