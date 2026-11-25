@@ -1,0 +1,4 @@
+# Salin menjadi terraform.tfvars (diabaikan Git), lalu isi milik Anda. Nilai per lingkungan
+# TIDAK ditaruh di sini, tetapi di env/<lingkungan>.tfvars.
+nim      = "121450001"
+kelompok = "k00"

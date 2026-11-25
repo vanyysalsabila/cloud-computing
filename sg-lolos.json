@@ -1,0 +1,19 @@
+{
+  "format_version": "1.2",
+  "resource_changes": [
+    {
+      "address": "aws_vpc_security_group_ingress_rule.uji_lolos",
+      "type": "aws_vpc_security_group_ingress_rule",
+      "change": {
+        "actions": ["create"],
+        "after": {
+          "cidr_ipv4": "0.0.0.0/0",
+          "cidr_ipv6": null,
+          "ip_protocol": "tcp",
+          "from_port": 443,
+          "to_port": 443
+        }
+      }
+    }
+  ]
+}

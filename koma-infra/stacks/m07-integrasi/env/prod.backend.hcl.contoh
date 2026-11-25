@@ -1,0 +1,7 @@
+# Salin menjadi env/prod.backend.hcl lalu ganti NIM dan ID akun dengan milik Anda (bucket yang sama
+# dengan backend.hcl stack m04-data). Berkas .backend.hcl di-commit: pipeline membacanya.
+bucket       = "koma-121450001-tfstate-111122223333"
+key          = "m07/prod.tfstate"
+region       = "ap-southeast-2"
+encrypt      = true
+use_lockfile = true

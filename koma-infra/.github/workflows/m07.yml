@@ -1,0 +1,115 @@
+# Pipeline Modul 07: satu-satunya jalan perubahan stack m07-integrasi (H6).
+#
+#   pull request  -> uji (tanpa AWS) -> rencana dev + gerbang Conftest      (tidak menerapkan)
+#   push ke main  -> uji (tanpa AWS) -> rencana dev + gerbang Conftest -> terapkan dev
+#   jalankan manual (workflow_dispatch): pilih lingkungan dev/prod dan aksi terapkan/bongkar
+#
+# Variabel repo (Settings > Secrets and variables > Actions > Variables), bukan rahasia:
+#   AWS_ROLE_ARN   keluaran role_arn stack m00-pipeline
+#   KOMA_NIM       NIM Anda
+#   KOMA_KELOMPOK  k01-k05
+name: m07-integrasi
+
+on:
+  pull_request:
+    paths:
+      - "stacks/m07-integrasi/**"
+      - "modules/antrean-arsip/**"
+      - "policy/m07.rego"
+      - ".github/workflows/m07.yml"
+  push:
+    branches: [main]
+    paths:
+      - "stacks/m07-integrasi/**"
+      - "modules/antrean-arsip/**"
+      - "policy/m07.rego"
+      - ".github/workflows/m07.yml"
+  workflow_dispatch:
+    inputs:
+      lingkungan:
+        description: "Lingkungan"
+        type: choice
+        options: [dev, prod]
+        default: dev
+      aksi:
+        description: "terapkan = apply, bongkar = destroy"
+        type: choice
+        options: [terapkan, bongkar]
+        default: terapkan
+
+# Bawaan: token GitHub hanya boleh membaca isi repo. Hak meminta token OIDC diberikan per job.
+permissions:
+  contents: read
+
+env:
+  TOFU_VERSION: "1.12.6"
+  CONFTEST_VERSION: "0.71.1"
+  STACK: stacks/m07-integrasi
+
+jobs:
+  uji:
+    name: uji (tanpa AWS)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_version: ${{ env.TOFU_VERSION }}
+          tofu_wrapper: false
+      - name: Format
+        run: tofu fmt -check -recursive stacks/m07-integrasi modules/antrean-arsip
+      - name: Validate
+        run: |
+          tofu -chdir="$STACK" init -backend=false -input=false
+          tofu -chdir="$STACK" validate
+      - name: Uji dengan mock provider
+        run: tofu -chdir="$STACK" test
+
+  rencana-dan-terapkan:
+    name: rencana, gerbang, ${{ github.event_name == 'pull_request' && 'tanpa terapkan' || 'terapkan' }} (${{ inputs.lingkungan || 'dev' }})
+    needs: uji
+    runs-on: ubuntu-latest
+    # Hanya job ini yang boleh meminta token OIDC ke GitHub. Ditulis satu baris (gaya flow YAML),
+    # setara dengan dua baris contents/id-token.
+    permissions: {contents: read, id-token: write}
+    # Satu run per lingkungan pada satu waktu; run berikutnya menunggu, tidak membatalkan.
+    concurrency:
+      group: m07-${{ inputs.lingkungan || 'dev' }}
+      cancel-in-progress: false
+    env:
+      LINGKUNGAN: ${{ inputs.lingkungan || 'dev' }}
+      AKSI: ${{ inputs.aksi || 'terapkan' }}
+      TF_IN_AUTOMATION: "1"
+      TF_VAR_nim: ${{ vars.KOMA_NIM }}
+      TF_VAR_kelompok: ${{ vars.KOMA_KELOMPOK }}
+      TF_VAR_penerap: github-actions
+      TF_VAR_run_id: ${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_version: ${{ env.TOFU_VERSION }}
+          tofu_wrapper: false
+      - name: Pasang Conftest
+        run: |
+          curl -fsSL -o /tmp/conftest.tgz \
+            "https://github.com/open-policy-agent/conftest/releases/download/v${CONFTEST_VERSION}/conftest_${CONFTEST_VERSION}_Linux_x86_64.tar.gz"
+          tar -xzf /tmp/conftest.tgz -C /tmp conftest
+          sudo install /tmp/conftest /usr/local/bin/conftest
+      - name: Kredensial sementara lewat OIDC
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          role-session-name: koma-pipeline-${{ github.run_id }}
+          aws-region: ap-southeast-2
+      - name: Init (${{ env.LINGKUNGAN }})
+        run: tofu -chdir="$STACK" init -input=false -backend-config="env/$LINGKUNGAN.backend.hcl"
+      - name: Plan
+        run: |
+          ARGS=(-input=false "-var-file=env/$LINGKUNGAN.tfvars" -out=rencana.tfplan)
+          if [ "$AKSI" = "bongkar" ]; then ARGS+=(-destroy); fi
+          tofu -chdir="$STACK" plan "${ARGS[@]}"
+          tofu -chdir="$STACK" show -json rencana.tfplan > rencana.plan.json
+          tofu -chdir="$STACK" show -no-color rencana.tfplan | tail -n 40 >> "$GITHUB_STEP_SUMMARY"
+      # TODO E.3  langkah "Gerbang kebijakan (Conftest, namespace m07)" atas rencana.plan.json
+      # TODO E.3  langkah "Terapkan" (hanya bila bukan pull_request): apply rencana.tfplan

@@ -1,0 +1,19 @@
+{
+  "format_version": "1.2",
+  "resource_changes": [
+    {
+      "address": "aws_vpc_security_group_ingress_rule.uji_gagal",
+      "type": "aws_vpc_security_group_ingress_rule",
+      "change": {
+        "actions": ["create"],
+        "after": {
+          "cidr_ipv4": null,
+          "cidr_ipv6": "::/0",
+          "ip_protocol": "tcp",
+          "from_port": 3000,
+          "to_port": 4000
+        }
+      }
+    }
+  ]
+}
