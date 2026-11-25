@@ -1,0 +1,232 @@
+{
+  "skema": "koma-bukti/3",
+  "versi_koma": "3.7.0",
+  "nim": "123450022",
+  "kelompok": "k01",
+  "region": "ap-southeast-2",
+  "akun_sidik": "734d0c06cf00124e",
+  "modul": "m05",
+  "dibuat": "2026-11-25T09:25:54Z",
+  "sumber": "lokal",
+  "hasil": [
+    {
+      "id": "blok_publik_akun",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-25T09:21:57Z; kini: S3 Block Public Access tingkat akun aktif penuh"
+    },
+    {
+      "id": "bucket_privat",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-25T09:21:57Z; kini: bucket laporan belum ada, belum memblok publik, kebijakannya publik, atau belum SSE-KMS"
+    },
+    {
+      "id": "sg_terbatas",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-25T09:21:57Z; kini: instance api belum punya security group"
+    },
+    {
+      "id": "rahasia_securestring",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-25T09:21:57Z; kini: parameter /koma/123450022/m05/db-password belum ada, bukan SecureString, atau tidak memakai kunci KMS m05"
+    },
+    {
+      "id": "userdata_bersih",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-25T09:21:57Z; kini: server api atau user data-nya belum ada"
+    },
+    {
+      "id": "iam_minimal",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-25T09:21:57Z; kini: instance api belum ada"
+    },
+    {
+      "id": "state_terenkripsi",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-25T09:21:57Z; kini: m05/aman.tfstate ada dan terenkripsi"
+    },
+    {
+      "id": "kms_rotasi",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-25T09:21:57Z; kini: kunci KMS m05 belum ada, bukan milik sendiri, atau rotasinya mati"
+    },
+    {
+      "id": "imdsv2",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-25T09:21:57Z; kini: server api belum mewajibkan IMDSv2"
+    },
+    {
+      "id": "rahasia_dirotasi",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-25T09:21:57Z; kini: parameter rahasia versi 0"
+    },
+    {
+      "id": "dikelola_kode",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-25T09:21:57Z; kini: 10 resource m05 bertag managed-by=opentofu"
+    },
+    {
+      "id": "tag_pemilik",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-25T09:21:57Z; kini: tag nim=123450022 dan kelompok=k01"
+    },
+    {
+      "id": "nama_konvensi",
+      "lulus": true,
+      "pesan": "dari potret aktif 2026-11-25T09:21:57Z; kini: Name diawali koma-123450022-m05-, parameter diawali /koma/123450022/m05/"
+    },
+    {
+      "id": "tanpa_instance_liar",
+      "lulus": true,
+      "pesan": "tidak ada instance tanpa tag managed-by"
+    },
+    {
+      "id": "bersih_akhir",
+      "lulus": true,
+      "pesan": "potret terakhir: tanpa server, bucket laporan, parameter, dan kunci aktif m05 (kunci yang menunggu dihapus boleh)"
+    }
+  ],
+  "ringkasan": {
+    "latihan_lulus": true,
+    "tugas_lulus": true,
+    "skor_latihan": 1.0
+  },
+  "riwayat": [
+    {
+      "waktu": "2026-11-25T08:34:16Z",
+      "aktif": true,
+      "instance": {
+        "koma-123450022-m05-api": {
+          "id": "i-0cf994b237ba7822a",
+          "sidik": "8a0ab319d93925a7d2c4675ddb32f537b369c35673456ad23c5699f1a8b21fb5"
+        }
+      },
+      "api": "i-0cf994b237ba7822a",
+      "versi_rahasia": 1,
+      "kunci": [
+        "7decf9dc-1222-41e6-bae3-5dbde63cba01"
+      ],
+      "cek": {
+        "blok_publik_akun": true,
+        "bucket_privat": true,
+        "sg_terbatas": true,
+        "rahasia_securestring": true,
+        "userdata_bersih": true,
+        "iam_minimal": true,
+        "state_terenkripsi": true,
+        "kms_rotasi": true,
+        "imdsv2": true,
+        "rahasia_dirotasi": false,
+        "dikelola_kode": true,
+        "tag_pemilik": true,
+        "nama_konvensi": true
+      }
+    },
+    {
+      "waktu": "2026-11-25T08:36:01Z",
+      "aktif": false,
+      "instance": {},
+      "api": null,
+      "versi_rahasia": null,
+      "kunci": [],
+      "cek": {
+        "blok_publik_akun": true,
+        "bucket_privat": false,
+        "sg_terbatas": false,
+        "rahasia_securestring": false,
+        "userdata_bersih": false,
+        "iam_minimal": false,
+        "state_terenkripsi": true,
+        "kms_rotasi": false,
+        "imdsv2": false,
+        "rahasia_dirotasi": false,
+        "dikelola_kode": true,
+        "tag_pemilik": true,
+        "nama_konvensi": true
+      }
+    },
+    {
+      "waktu": "2026-11-25T08:38:22Z",
+      "aktif": true,
+      "instance": {
+        "koma-123450022-m05-api": {
+          "id": "i-0305eb643a656f916",
+          "sidik": "8a0ab319d93925a7d2c4675ddb32f537b369c35673456ad23c5699f1a8b21fb5"
+        }
+      },
+      "api": "i-0305eb643a656f916",
+      "versi_rahasia": 1,
+      "kunci": [
+        "3545d881-ed9f-4751-bff0-d4ef2d8e7e33"
+      ],
+      "cek": {
+        "blok_publik_akun": true,
+        "bucket_privat": true,
+        "sg_terbatas": true,
+        "rahasia_securestring": true,
+        "userdata_bersih": true,
+        "iam_minimal": true,
+        "state_terenkripsi": true,
+        "kms_rotasi": true,
+        "imdsv2": true,
+        "rahasia_dirotasi": false,
+        "dikelola_kode": true,
+        "tag_pemilik": true,
+        "nama_konvensi": true
+      }
+    },
+    {
+      "waktu": "2026-11-25T09:21:57Z",
+      "aktif": true,
+      "instance": {
+        "koma-123450022-m05-api": {
+          "id": "i-0305eb643a656f916",
+          "sidik": "8a0ab319d93925a7d2c4675ddb32f537b369c35673456ad23c5699f1a8b21fb5"
+        }
+      },
+      "api": "i-0305eb643a656f916",
+      "versi_rahasia": 2,
+      "kunci": [
+        "3545d881-ed9f-4751-bff0-d4ef2d8e7e33"
+      ],
+      "cek": {
+        "blok_publik_akun": true,
+        "bucket_privat": true,
+        "sg_terbatas": true,
+        "rahasia_securestring": true,
+        "userdata_bersih": true,
+        "iam_minimal": true,
+        "state_terenkripsi": true,
+        "kms_rotasi": true,
+        "imdsv2": true,
+        "rahasia_dirotasi": true,
+        "dikelola_kode": true,
+        "tag_pemilik": true,
+        "nama_konvensi": true
+      }
+    },
+    {
+      "waktu": "2026-11-25T09:25:54Z",
+      "aktif": false,
+      "instance": {},
+      "api": null,
+      "versi_rahasia": null,
+      "kunci": [],
+      "cek": {
+        "blok_publik_akun": true,
+        "bucket_privat": false,
+        "sg_terbatas": false,
+        "rahasia_securestring": false,
+        "userdata_bersih": false,
+        "iam_minimal": false,
+        "state_terenkripsi": true,
+        "kms_rotasi": false,
+        "imdsv2": false,
+        "rahasia_dirotasi": false,
+        "dikelola_kode": true,
+        "tag_pemilik": true,
+        "nama_konvensi": true
+      }
+    }
+  ],
+  "tanda_tangan": null
+}

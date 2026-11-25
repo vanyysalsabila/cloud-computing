@@ -32,9 +32,31 @@ deny contains msg if {
 }
 
 # ---------------------------------------------------------------- aturan 2
-# TODO aturan 2: tolak aws_vpc_security_group_ingress_rule yang sumbernya 0.0.0.0/0 (cidr_ipv4)
-# atau ::/0 (cidr_ipv6) DAN mencakup port admin (22 atau 3389, termasuk rentang from_port..to_port
-# yang melewatinya) atau ip_protocol "-1" (semua protokol). Pesan menyebut rc.address.
+# Tolak aws_vpc_security_group_ingress_rule yang sumbernya 0.0.0.0/0 atau ::/0
+# DAN mencakup port admin (22 atau 3389, termasuk rentang) atau ip_protocol "-1".
+
+sumber_dunia(a) if a.cidr_ipv4 == "0.0.0.0/0"
+
+sumber_dunia(a) if a.cidr_ipv6 == "::/0"
+
+mencakup_admin(a) if a.ip_protocol == "-1"
+
+mencakup_admin(a) if {
+	some p in port_admin
+	is_number(a.from_port)
+	is_number(a.to_port)
+	a.from_port <= p
+	p <= a.to_port
+}
+
+deny contains msg if {
+	rc := input.resource_changes[_]
+	rc.type == "aws_vpc_security_group_ingress_rule"
+	a := rc.change.after
+	sumber_dunia(a)
+	mencakup_admin(a)
+	msg := sprintf("%s: aturan ingress membuka akses publik ke port admin atau semua protokol", [rc.address])
+}
 
 # ---------------------------------------------------------------- aturan 3 (starter)
 # Variabel bernama rahasia yang punya nilai bawaan: rahasianya tertulis di kode.
@@ -47,13 +69,56 @@ deny contains msg if {
 }
 
 # ---------------------------------------------------------------- aturan 4
-# TODO aturan 4: tolak output yang namanya cocok pola_rahasia dan tidak ditandai sensitive
-# (input.configuration.root_module.outputs).
+# Tolak output yang namanya cocok pola_rahasia dan tidak ditandai sensitive.
+
+deny contains msg if {
+	some nama, o in input.configuration.root_module.outputs
+	regex.match(pola_rahasia, nama)
+	not o.sensitive
+	msg := sprintf("output.%s: output rahasia tidak ditandai sensitive = true", [nama])
+}
 
 # ---------------------------------------------------------------- aturan 5
-# TODO aturan 5: tolak aws_instance yang change.after.user_data cocok pola_nilai_rahasia.
+# Tolak aws_instance yang change.after.user_data cocok pola_nilai_rahasia.
+
+deny contains msg if {
+	rc := input.resource_changes[_]
+	rc.type == "aws_instance"
+	ud := rc.change.after.user_data
+	is_string(ud)
+	regex.match(pola_nilai_rahasia, ud)
+	msg := sprintf("%s: user_data memuat nilai rahasia langsung", [rc.address])
+}
 
 # ---------------------------------------------------------------- aturan 6
-# TODO aturan 6: tolak aws_iam_role_policy atau aws_iam_policy yang kebijakannya punya pernyataan
-# Allow dengan aksi "*" atau "<layanan>:*". Action boleh string atau daftar (lihat aturan 1 untuk
-# cara membaca JSON kebijakan).
+# Tolak aws_iam_role_policy atau aws_iam_policy dengan pernyataan Allow aksi "*" atau "<layanan>:*".
+
+pernyataan_iam(doc) := doc.Statement if is_array(doc.Statement)
+
+pernyataan_iam(doc) := [doc.Statement] if is_object(doc.Statement)
+
+aksi_wildcard(s) if s == "*"
+
+aksi_wildcard(s) if endswith(s, ":*")
+
+aksi_liar(a) if {
+	is_string(a)
+	aksi_wildcard(a)
+}
+
+aksi_liar(a) if {
+	is_array(a)
+	some item in a
+	aksi_wildcard(item)
+}
+
+deny contains msg if {
+	rc := input.resource_changes[_]
+	rc.type in {"aws_iam_role_policy", "aws_iam_policy"}
+	pol := rc.change.after.policy
+	is_string(pol)
+	s := pernyataan_iam(json.unmarshal(pol))[_]
+	s.Effect == "Allow"
+	aksi_liar(s.Action)
+	msg := sprintf("%s: kebijakan IAM mengizinkan aksi wildcard (* atau <layanan>:*)", [rc.address])
+}
